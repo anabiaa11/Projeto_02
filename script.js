@@ -1,158 +1,173 @@
-// Global Variables
-let projects = [];
-let currentFilter = 'all';
-let projectIdCounter = 1;
+// Variáveis Globais
+let projetos = [];
+let filtroAtual = 'all';
+let contadorIdProjeto = 1;
+let taxasCambio = {};
 
-// Sample initial data
-const sampleProjects = [
+// Dados iniciais de exemplo
+const projetosAmostra = [
     {
         id: 1,
-        title: "Cirurgia de Emergência para João",
-        description: "João, de 8 anos, precisa de uma cirurgia cardíaca urgente. Sua família não tem recursos para custear o procedimento.",
-        category: "saude",
-        goal: 50000,
-        raised: 32000,
-        image: "https://images.unsplash.com/photo-1576091160399-112ba8d25d1f?ixlib=rb-4.0.3&auto=format&fit=crop&w=1000&q=80",
-        donors: 156,
-        daysLeft: 15
+        titulo: "Cirurgia de Emergência para João",
+        descricao: "João, de 8 anos, precisa de uma cirurgia cardíaca urgente. Sua família não tem recursos para custear o procedimento.",
+        categoria: "saude",
+        meta: 50000,
+        arrecadado: 32000,
+        imagem: "https://images.unsplash.com/photo-1576091160399-112ba8d25d1f?ixlib=rb-4.0.3&auto=format&fit=crop&w=1000&q=80",
+        doadores: 156,
+        diasRestantes: 15
     },
     {
         id: 2,
-        title: "Reforma da Escola Rural",
-        description: "Nossa escola rural precisa de reformas urgentes no telhado e nas salas de aula para continuar funcionando.",
-        category: "educacao",
-        goal: 25000,
-        raised: 18500,
-        image: "https://images.unsplash.com/photo-1580582932707-520aed937b7b?ixlib=rb-4.0.3&auto=format&fit=crop&w=1000&q=80",
-        donors: 89,
-        daysLeft: 30
+        titulo: "Reforma da Escola Rural",
+        descricao: "Nossa escola rural precisa de reformas urgentes no telhado e nas salas de aula para continuar funcionando.",
+        categoria: "educacao",
+        meta: 25000,
+        arrecadado: 18500,
+        imagem: "https://images.unsplash.com/photo-1580582932707-520aed937b7b?ixlib=rb-4.0.3&auto=format&fit=crop&w=1000&q=80",
+        doadores: 89,
+        diasRestantes: 30
     },
     {
         id: 3,
-        title: "Resgate de Animais Abandonados",
-        description: "ONG que resgata animais abandonados precisa de recursos para medicamentos e ração.",
-        category: "animal",
-        goal: 15000,
-        raised: 12000,
-        image: "https://images.unsplash.com/photo-1601758228041-f3b2795255f1?ixlib=rb-4.0.3&auto=format&fit=crop&w=1000&q=80",
-        donors: 203,
-        daysLeft: 45
+        titulo: "Resgate de Animais Abandonados",
+        descricao: "ONG que resgata animais abandonados precisa de recursos para medicamentos e ração.",
+        categoria: "animal",
+        meta: 15000,
+        arrecadado: 12000,
+        imagem: "https://images.unsplash.com/photo-1601758228041-f3b2795255f1?ixlib=rb-4.0.3&auto=format&fit=crop&w=1000&q=80",
+        doadores: 203,
+        diasRestantes: 45
     },
     {
         id: 4,
-        title: "Família Desabrigada pelo Temporal",
-        description: "Família perdeu tudo em enchente e precisa de ajuda para reconstruir sua casa e comprar móveis básicos.",
-        category: "emergencia",
-        goal: 30000,
-        raised: 8000,
-        image: "https://images.unsplash.com/photo-1547036967-23d11aacaee0?ixlib=rb-4.0.3&auto=format&fit=crop&w=1000&q=80",
-        donors: 45,
-        daysLeft: 60
+        titulo: "Família Desabrigada pelo Temporal",
+        descricao: "Família perdeu tudo em enchente e precisa de ajuda para reconstruir sua casa e comprar móveis básicos.",
+        categoria: "emergencia",
+        meta: 30000,
+        arrecadado: 8000,
+        imagem: "https://images.unsplash.com/photo-1547036967-23d11aacaee0?ixlib=rb-4.0.3&auto=format&fit=crop&w=1000&q=80",
+        doadores: 45,
+        diasRestantes: 60
     },
     {
         id: 5,
-        title: "Equipamentos para Time de Futebol",
-        description: "Time de futebol infantil da comunidade precisa de uniformes e equipamentos para participar do campeonato.",
-        category: "esporte",
-        goal: 8000,
-        raised: 6200,
-        image: "https://images.unsplash.com/photo-1556056504-5c7696c4c28d?ixlib=rb-4.0.3&auto=format&fit=crop&w=1000&q=80",
-        donors: 67,
-        daysLeft: 20
+        titulo: "Equipamentos para Time de Futebol",
+        descricao: "Time de futebol infantil da comunidade precisa de uniformes e equipamentos para participar do campeonato.",
+        categoria: "esporte",
+        meta: 8000,
+        arrecadado: 6200,
+        imagem: "https://images.unsplash.com/photo-1556056504-5c7696c4c28d?ixlib=rb-4.0.3&auto=format&fit=crop&w=1000&q=80",
+        doadores: 67,
+        diasRestantes: 20
     },
     {
         id: 6,
-        title: "Festival de Arte na Comunidade",
-        description: "Organização de festival cultural para promover artistas locais e fortalecer a cultura da região.",
-        category: "cultura",
-        goal: 12000,
-        raised: 4500,
-        image: "https://images.unsplash.com/photo-1493225457124-a3eb161ffa5f?ixlib=rb-4.0.3&auto=format&fit=crop&w=1000&q=80",
-        donors: 34,
-        daysLeft: 40
+        titulo: "Festival de Arte na Comunidade",
+        descricao: "Organização de festival cultural para promover artistas locais e fortalecer a cultura da região.",
+        categoria: "cultura",
+        meta: 12000,
+        arrecadado: 4500,
+        imagem: "https://images.unsplash.com/photo-1493225457124-a3eb161ffa5f?ixlib=rb-4.0.3&auto=format&fit=crop&w=1000&q=80",
+        doadores: 34,
+        diasRestantes: 40
     }
-    
 ];
 
-// Initialize the application
+// Inicializar aplicação quando DOM carregar
 document.addEventListener('DOMContentLoaded', function() {
-    initializeApp();
-    setupEventListeners();
-    loadProjects();
-    updateStats();
-    fetchQuoteOfTheDay();
+    inicializarApp();
+    configurarEventListeners();
+    carregarProjetos();
+    atualizarEstatisticas();
+    buscarFraseDoDia();
+    buscarTaxasCambio();
+    configurarPagamentos();
 });
 
-// Initialize the application
-function initializeApp() {
-    // Load projects from localStorage or use sample data
-    const savedProjects = localStorage.getItem('projects');
-    if (savedProjects) {
-        projects = JSON.parse(savedProjects);
-        projectIdCounter = Math.max(...projects.map(p => p.id)) + 1;
-    } else {
-        projects = [...sampleProjects];
-        projectIdCounter = sampleProjects.length + 1;
-        saveProjects();
-    }
+// Inicializar aplicação
+function inicializarApp() {
+    projetos = [...projetosAmostra];
+    contadorIdProjeto = projetosAmostra.length + 1;
+    console.log('Aplicação inicializada com', projetos.length, 'projetos');
 }
 
-// Setup event listeners
-function setupEventListeners() {
-    // Mobile navigation toggle
+// Configurar event listeners
+function configurarEventListeners() {
+    // Toggle do menu mobile
     const navToggle = document.getElementById('nav-toggle');
     const navMenu = document.getElementById('nav-menu');
     
-    navToggle.addEventListener('click', function() {
-        navMenu.classList.toggle('active');
-        navToggle.classList.toggle('active');
-    });
+    if (navToggle && navMenu) {
+        navToggle.addEventListener('click', function() {
+            navMenu.classList.toggle('active');
+            navToggle.classList.toggle('active');
+        });
+    }
 
-    // Close mobile menu when clicking on links
+    // Fechar menu mobile ao clicar nos links
     document.querySelectorAll('.nav-link').forEach(link => {
         link.addEventListener('click', function() {
-            navMenu.classList.remove('active');
-            navToggle.classList.remove('active');
+            if (navMenu) navMenu.classList.remove('active');
+            if (navToggle) navToggle.classList.remove('active');
         });
     });
 
-    // Project filter buttons
+    // Botões de filtro de projetos
     document.querySelectorAll('.filter-btn').forEach(btn => {
         btn.addEventListener('click', function() {
             document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
             this.classList.add('active');
-            currentFilter = this.dataset.filter;
-            renderProjects();
+            filtroAtual = this.dataset.filter;
+            renderizarProjetos();
         });
     });
 
-    // Form submissions
-    const createProjectForm = document.getElementById('create-project-form');
-    createProjectForm.addEventListener('submit', handleCreateProject);
+    // Formulário de criar projeto
+    const formCriarProjeto = document.getElementById('create-project-form');
+    if (formCriarProjeto) {
+        formCriarProjeto.addEventListener('submit', processarCriacaoProjeto);
+    }
 
-    const donationForm = document.getElementById('donation-form');
-    donationForm.addEventListener('submit', handleDonation);
+    // Formulário de doação
+    const formDoacao = document.getElementById('donation-form');
+    if (formDoacao) {
+        formDoacao.addEventListener('submit', processarDoacao);
+    }
 
-    const contactForm = document.getElementById('contact-form');
-    contactForm.addEventListener('submit', handleContactForm);
+    // Formulário de contato
+    const formContato = document.getElementById('contact-form');
+    if (formContato) {
+        formContato.addEventListener('submit', processarContato);
+    }
 
-    // Donation amount buttons
+    // Botões de valor de doação
     document.querySelectorAll('.amount-btn').forEach(btn => {
         btn.addEventListener('click', function() {
             document.querySelectorAll('.amount-btn').forEach(b => b.classList.remove('selected'));
             this.classList.add('selected');
-            document.querySelector('input[name="amount"]').value = this.dataset.amount;
+            const inputValor = document.querySelector('input[name="amount"]');
+            if (inputValor) {
+                inputValor.value = this.dataset.amount;
+                atualizarResumoDoacao();
+                atualizarConversaoMoeda(this.dataset.amount);
+            }
         });
     });
 
-    // Custom amount input
-    document.querySelector('input[name="amount"]').addEventListener('input', function() {
-        if (this.value) {
-            document.querySelectorAll('.amount-btn').forEach(b => b.classList.remove('selected'));
-        }
-    });
+    // Input de valor personalizado
+    const inputValorPersonalizado = document.querySelector('input[name="amount"]');
+    if (inputValorPersonalizado) {
+        inputValorPersonalizado.addEventListener('input', function() {
+            if (this.value) {
+                document.querySelectorAll('.amount-btn').forEach(b => b.classList.remove('selected'));
+                atualizarResumoDoacao();
+                atualizarConversaoMoeda(this.value);
+            }
+        });
+    }
 
-    // Smooth scrolling for anchor links
+    // Scroll suave para âncoras
     document.querySelectorAll('a[href^="#"]').forEach(anchor => {
         anchor.addEventListener('click', function (e) {
             e.preventDefault();
@@ -166,33 +181,48 @@ function setupEventListeners() {
         });
     });
 
-    // Window scroll event for navbar
+    // Efeito no header durante scroll
     window.addEventListener('scroll', function() {
         const header = document.querySelector('.header');
-        if (window.scrollY > 100) {
-            header.style.background = 'rgba(255, 255, 255, 0.95)';
-            header.style.backdropFilter = 'blur(10px)';
-        } else {
-            header.style.background = '#fff';
-            header.style.backdropFilter = 'none';
+        if (header) {
+            if (window.scrollY > 100) {
+                header.style.background = 'rgba(255, 255, 255, 0.95)';
+                header.style.backdropFilter = 'blur(10px)';
+            } else {
+                header.style.background = '#fff';
+                header.style.backdropFilter = 'none';
+            }
         }
+    });
+
+    // Fechar modais ao clicar fora
+    window.addEventListener('click', function(e) {
+        const modalProjeto = document.getElementById('project-modal');
+        const modalDoacao = document.getElementById('donation-modal');
+        const modalSucesso = document.getElementById('success-modal');
+        
+        if (e.target === modalProjeto) fecharModal();
+        if (e.target === modalDoacao) fecharModalDoacao();
+        if (e.target === modalSucesso) fecharModalSucesso();
     });
 }
 
-// Load and render projects
-function loadProjects() {
-    renderProjects();
+// Carregar e renderizar projetos
+function carregarProjetos() {
+    renderizarProjetos();
 }
 
-function renderProjects() {
-    const projectsGrid = document.getElementById('projects-grid');
-    const filteredProjects = currentFilter === 'all' 
-        ? projects 
-        : projects.filter(project => project.category === currentFilter);
+function renderizarProjetos() {
+    const gridProjetos = document.getElementById('projects-grid');
+    if (!gridProjetos) return;
 
-    projectsGrid.innerHTML = filteredProjects.map(project => {
-        const progressPercentage = Math.min((project.raised / project.goal) * 100, 100);
-        const categoryNames = {
+    const projetosFiltrados = filtroAtual === 'all' 
+        ? projetos 
+        : projetos.filter(projeto => projeto.categoria === filtroAtual);
+
+    gridProjetos.innerHTML = projetosFiltrados.map(projeto => {
+        const porcentagemProgresso = Math.min((projeto.arrecadado / projeto.meta) * 100, 100);
+        const nomesCategorias = {
             'saude': 'Saúde',
             'educacao': 'Educação',
             'animal': 'Animais',
@@ -202,31 +232,31 @@ function renderProjects() {
         };
 
         return `
-            <div class="project-card" data-category="${project.category}">
-                <div class="project-image" style="background-image: url('${project.image}')">
-                    <span class="project-category">${categoryNames[project.category]}</span>
+            <div class="project-card" data-category="${projeto.categoria}">
+                <div class="project-image" style="background-image: url('${projeto.imagem}')">
+                    <span class="project-category">${nomesCategorias[projeto.categoria]}</span>
                 </div>
                 <div class="project-content">
-                    <h3 class="project-title">${project.title}</h3>
-                    <p class="project-description">${project.description}</p>
+                    <h3 class="project-title">${projeto.titulo}</h3>
+                    <p class="project-description">${projeto.descricao}</p>
                     <div class="project-progress">
                         <div class="progress-bar">
-                            <div class="progress-fill" style="width: ${progressPercentage}%"></div>
+                            <div class="progress-fill" style="width: ${porcentagemProgresso}%"></div>
                         </div>
                     </div>
                     <div class="project-stats">
-                        <span class="raised">R$ ${formatMoney(project.raised)} arrecadado</span>
-                        <span class="goal">Meta: R$ ${formatMoney(project.goal)}</span>
+                        <span class="raised">R$ ${formatarDinheiro(projeto.arrecadado)} arrecadado</span>
+                        <span class="goal">Meta: R$ ${formatarDinheiro(projeto.meta)}</span>
                     </div>
                     <div class="project-stats">
-                        <span>${project.donors} doadores</span>
-                        <span>${project.daysLeft} dias restantes</span>
+                        <span>${projeto.doadores} doadores</span>
+                        <span>${projeto.diasRestantes} dias restantes</span>
                     </div>
                     <div class="project-actions">
-                        <button class="btn-secondary" onclick="shareProject(${project.id})">
+                        <button class="btn-secondary" onclick="compartilharProjeto(${projeto.id})">
                             <i class="fas fa-share-alt"></i> Compartilhar
                         </button>
-                        <button class="btn-donate" onclick="openDonationModal(${project.id})">
+                        <button class="btn-donate" onclick="abrirModalDoacao(${projeto.id})">
                             <i class="fas fa-heart"></i> Doar
                         </button>
                     </div>
@@ -236,158 +266,199 @@ function renderProjects() {
     }).join('');
 }
 
-// Handle create project form
-function handleCreateProject(e) {
+// Processar criação de projeto
+function processarCriacaoProjeto(e) {
     e.preventDefault();
     
     const formData = new FormData(e.target);
-    const newProject = {
-        id: projectIdCounter++,
-        title: formData.get('title'),
-        description: formData.get('description'),
-        category: formData.get('category'),
-        goal: parseInt(formData.get('goal')),
-        raised: 0,
-        image: formData.get('image') || getDefaultImage(formData.get('category')),
-        donors: 0,
-        daysLeft: 60
+    const novoProjeto = {
+        id: contadorIdProjeto++,
+        titulo: formData.get('title'),
+        descricao: formData.get('description'),
+        categoria: formData.get('category'),
+        meta: parseInt(formData.get('goal')),
+        arrecadado: 0,
+        imagem: formData.get('image') || obterImagemPadrao(formData.get('category')),
+        doadores: 0,
+        diasRestantes: 60
     };
 
-    projects.unshift(newProject);
-    saveProjects();
-    renderProjects();
-    updateStats();
-    closeModal();
+    projetos.unshift(novoProjeto);
+    renderizarProjetos();
+    atualizarEstatisticas();
+    fecharModal();
     
-    showMessage('Projeto criado com sucesso!', 'success');
+    mostrarMensagem('Projeto criado com sucesso!', 'success');
     e.target.reset();
 }
 
-// Handle donation
-function handleDonation(e) {
+// Processar doação
+function processarDoacao(e) {
     e.preventDefault();
     
     const formData = new FormData(e.target);
-    const projectId = parseInt(document.getElementById('donation-modal').dataset.projectId);
-    const amount = parseFloat(formData.get('amount'));
-    const donorName = formData.get('donor_name');
-    const donorEmail = formData.get('donor_email');
-    const message = formData.get('message');
+    const projetoId = parseInt(document.getElementById('donation-modal').dataset.projectId);
+    const valor = parseFloat(formData.get('amount'));
+    const nomeDoador = formData.get('donor_name');
+    const emailDoador = formData.get('donor_email');
+    const metodoPagamento = formData.get('payment_method');
 
-    if (!amount || amount <= 0) {
-        showMessage('Por favor, insira um valor válido para a doação.', 'error');
+    if (!valor || valor <= 0) {
+        mostrarMensagem('Por favor, insira um valor válido para a doação.', 'error');
         return;
     }
 
-    const project = projects.find(p => p.id === projectId);
-    if (project) {
-        project.raised += amount;
-        project.donors += 1;
-        
-        // Simulate payment processing
-        const submitButton = e.target.querySelector('button[type="submit"]');
-        const originalText = submitButton.innerHTML;
-        submitButton.innerHTML = '<span class="loading"></span> Processando...';
-        submitButton.disabled = true;
+    if (!metodoPagamento) {
+        mostrarMensagem('Por favor, selecione um método de pagamento.', 'error');
+        return;
+    }
 
+    const projeto = projetos.find(p => p.id === projetoId);
+    if (projeto) {
+        const botaoSubmit = e.target.querySelector('button[type="submit"]');
+        const textoOriginal = botaoSubmit.innerHTML;
+        botaoSubmit.innerHTML = '<span class="loading-spinner"></span> Processando...';
+        botaoSubmit.disabled = true;
+
+        // Simular processamento de pagamento
         setTimeout(() => {
-            saveProjects();
-            renderProjects();
-            updateStats();
-            closeDonationModal();
+            projeto.arrecadado += valor;
+            projeto.doadores += 1;
             
-            showMessage(`Obrigado, ${donorName}! Sua doação de R$ ${formatMoney(amount)} foi processada com sucesso.`, 'success');
+            renderizarProjetos();
+            atualizarEstatisticas();
+            fecharModalDoacao();
             
-            submitButton.innerHTML = originalText;
-            submitButton.disabled = false;
+            mostrarMensagem(`Obrigado, ${nomeDoador}! Sua doação de R$ ${formatarDinheiro(valor)} foi processada com sucesso.`, 'success');
+            
+            botaoSubmit.innerHTML = textoOriginal;
+            botaoSubmit.disabled = false;
             e.target.reset();
             
-            // Send confirmation email (simulation)
-            sendDonationConfirmation(donorEmail, donorName, amount, project.title);
+            // Enviar confirmação por email (simulado)
+            enviarConfirmacaoDoacao(emailDoador, nomeDoador, valor, projeto.titulo);
         }, 2000);
     }
 }
 
-// Handle contact form
-function handleContactForm(e) {
+// Processar formulário de contato
+function processarContato(e) {
     e.preventDefault();
     
     const formData = new FormData(e.target);
-    const submitButton = e.target.querySelector('button[type="submit"]');
-    const originalText = submitButton.innerHTML;
+    const botaoSubmit = e.target.querySelector('button[type="submit"]');
+    const textoOriginal = botaoSubmit.innerHTML;
     
-    submitButton.innerHTML = '<span class="loading"></span> Enviando...';
-    submitButton.disabled = true;
+    botaoSubmit.innerHTML = '<span class="loading-spinner"></span> Enviando...';
+    botaoSubmit.disabled = true;
 
-    // Simulate email sending
+    // Simular envio de email
     setTimeout(() => {
-        showMessage('Mensagem enviada com sucesso! Entraremos em contato em breve.', 'success');
-        submitButton.innerHTML = originalText;
-        submitButton.disabled = false;
+        const dadosEmail = {
+            nome: formData.get('name'),
+            email: formData.get('email'),
+            mensagem: formData.get('message'),
+            emailDestino: 'contato@doafacil.com.br'
+        };
+        
+        console.log('Enviando email de contato:', dadosEmail);
+        mostrarMensagem('Mensagem enviada com sucesso! Entraremos em contato em breve.', 'success');
+        
+        botaoSubmit.innerHTML = textoOriginal;
+        botaoSubmit.disabled = false;
         e.target.reset();
     }, 1500);
 }
 
-// Modal functions
-function openModal() {
-    document.getElementById('project-modal').style.display = 'block';
-    document.body.style.overflow = 'hidden';
+// Funções do modal
+function abrirModal() {
+    const modal = document.getElementById('project-modal');
+    if (modal) {
+        modal.style.display = 'block';
+        document.body.style.overflow = 'hidden';
+    }
 }
 
-function closeModal() {
-    document.getElementById('project-modal').style.display = 'none';
-    document.body.style.overflow = 'auto';
+function fecharModal() {
+    const modal = document.getElementById('project-modal');
+    if (modal) {
+        modal.style.display = 'none';
+        document.body.style.overflow = 'auto';
+    }
 }
 
-function openDonationModal(projectId) {
-    const project = projects.find(p => p.id === projectId);
-    if (!project) return;
+function abrirModalDoacao(projetoId) {
+    const projeto = projetos.find(p => p.id === projetoId);
+    if (!projeto) return;
 
     const modal = document.getElementById('donation-modal');
-    const projectInfo = document.getElementById('donation-project-info');
+    const infoProjeto = document.getElementById('donation-project-info');
     
-    projectInfo.innerHTML = `
-        <h3>${project.title}</h3>
-        <p>Meta: R$ ${formatMoney(project.goal)} | Arrecadado: R$ ${formatMoney(project.raised)}</p>
-    `;
-    
-    modal.dataset.projectId = projectId;
-    modal.style.display = 'block';
-    document.body.style.overflow = 'hidden';
+    if (modal && infoProjeto) {
+        infoProjeto.innerHTML = `
+            <h3>${projeto.titulo}</h3>
+            <p>Meta: R$ ${formatarDinheiro(projeto.meta)} | Arrecadado: R$ ${formatarDinheiro(projeto.arrecadado)}</p>
+            <div class="progress-bar" style="margin-top: 0.5rem;">
+                <div class="progress-fill" style="width: ${Math.min((projeto.arrecadado / projeto.meta) * 100, 100)}%"></div>
+            </div>
+        `;
+        
+        modal.dataset.projectId = projetoId;
+        modal.style.display = 'block';
+        document.body.style.overflow = 'hidden';
+        
+        // Resetar formulário
+        const form = modal.querySelector('form');
+        if (form) form.reset();
+        
+        document.querySelectorAll('.payment-section').forEach(section => {
+            section.style.display = 'none';
+        });
+        
+        atualizarResumoDoacao();
+    }
 }
 
-function closeDonationModal() {
-    document.getElementById('donation-modal').style.display = 'none';
-    document.body.style.overflow = 'auto';
-    
-    // Reset form
-    document.getElementById('donation-form').reset();
-    document.querySelectorAll('.amount-btn').forEach(btn => btn.classList.remove('selected'));
+function fecharModalDoacao() {
+    const modal = document.getElementById('donation-modal');
+    if (modal) {
+        modal.style.display = 'none';
+        document.body.style.overflow = 'auto';
+        
+        // Resetar formulário
+        const form = document.getElementById('donation-form');
+        if (form) form.reset();
+        
+        document.querySelectorAll('.amount-btn').forEach(btn => btn.classList.remove('selected'));
+        document.querySelectorAll('.payment-section').forEach(section => {
+            section.style.display = 'none';
+        });
+        
+        const convertedAmount = document.getElementById('converted-amount');
+        const addressInfo = document.getElementById('address-info');
+        if (convertedAmount) convertedAmount.style.display = 'none';
+        if (addressInfo) addressInfo.style.display = 'none';
+    }
 }
 
-// Close modals when clicking outside
-window.addEventListener('click', function(e) {
-    const projectModal = document.getElementById('project-modal');
-    const donationModal = document.getElementById('donation-modal');
-    
-    if (e.target === projectModal) {
-        closeModal();
+function fecharModalSucesso() {
+    const modal = document.getElementById('success-modal');
+    if (modal) {
+        modal.style.display = 'none';
+        document.body.style.overflow = 'auto';
     }
-    if (e.target === donationModal) {
-        closeDonationModal();
-    }
-});
+}
 
-// Utility functions
-function formatMoney(amount) {
+// Funções utilitárias
+function formatarDinheiro(valor) {
     return new Intl.NumberFormat('pt-BR', {
         minimumFractionDigits: 2,
         maximumFractionDigits: 2
-    }).format(amount);
+    }).format(valor);
 }
 
-function getDefaultImage(category) {
-    const defaultImages = {
+function obterImagemPadrao(categoria) {
+    const imagensPadrao = {
         'saude': 'https://images.unsplash.com/photo-1576091160399-112ba8d25d1f?ixlib=rb-4.0.3&auto=format&fit=crop&w=1000&q=80',
         'educacao': 'https://images.unsplash.com/photo-1580582932707-520aed937b7b?ixlib=rb-4.0.3&auto=format&fit=crop&w=1000&q=80',
         'animal': 'https://images.unsplash.com/photo-1601758228041-f3b2795255f1?ixlib=rb-4.0.3&auto=format&fit=crop&w=1000&q=80',
@@ -395,539 +466,664 @@ function getDefaultImage(category) {
         'esporte': 'https://images.unsplash.com/photo-1556056504-5c7696c4c28d?ixlib=rb-4.0.3&auto=format&fit=crop&w=1000&q=80',
         'cultura': 'https://images.unsplash.com/photo-1493225457124-a3eb161ffa5f?ixlib=rb-4.0.3&auto=format&fit=crop&w=1000&q=80'
     };
-    return defaultImages[category] || defaultImages['saude'];
+    return imagensPadrao[categoria] || imagensPadrao['saude'];
 }
 
-function saveProjects() {
-    // In a real application, this would save to localStorage
-    // Since we can't use localStorage in artifacts, we'll simulate it
-    console.log('Projects saved:', projects);
+function atualizarEstatisticas() {
+    const totalDoado = projetos.reduce((soma, projeto) => soma + projeto.arrecadado, 0);
+    const totalProjetos = projetos.length;
+    const totalDoadores = projetos.reduce((soma, projeto) => soma + projeto.doadores, 0);
+
+    // Animar contadores
+    animarContador('total-donated', 0, totalDoado, 'currency');
+    animarContador('total-projects', 0, totalProjetos, 'number');
+    animarContador('total-donors', 0, totalDoadores, 'number');
 }
 
-function updateStats() {
-    const totalDonated = projects.reduce((sum, project) => sum + project.raised, 0);
-    const totalProjects = projects.length;
-    const totalDonors = projects.reduce((sum, project) => sum + project.donors, 0);
+function animarContador(elementId, inicio, fim, tipo) {
+    const elemento = document.getElementById(elementId);
+    if (!elemento) return;
 
-    // Animate counters
-    animateCounter('total-donated', 0, totalDonated, 'currency');
-    animateCounter('total-projects', 0, totalProjects, 'number');
-    animateCounter('total-donors', 0, totalDonors, 'number');
-}
-
-function animateCounter(elementId, start, end, type) {
-    const element = document.getElementById(elementId);
-    const duration = 2000;
-    const increment = (end - start) / (duration / 16);
-    let current = start;
+    const duracao = 2000;
+    const incremento = (fim - inicio) / (duracao / 16);
+    let atual = inicio;
 
     const timer = setInterval(() => {
-        current += increment;
-        if (current >= end) {
-            current = end;
+        atual += incremento;
+        if (atual >= fim) {
+            atual = fim;
             clearInterval(timer);
         }
 
-        if (type === 'currency') {
-            element.textContent = `R$ ${formatMoney(Math.floor(current))}`;
+        if (tipo === 'currency') {
+            elemento.textContent = `R$ ${formatarDinheiro(Math.floor(atual))}`;
         } else {
-            element.textContent = Math.floor(current).toLocaleString('pt-BR');
+            elemento.textContent = Math.floor(atual).toLocaleString('pt-BR');
         }
     }, 16);
 }
 
-function shareProject(projectId) {
-    const project = projects.find(p => p.id === projectId);
-    if (!project) return;
+function compartilharProjeto(projetoId) {
+    const projeto = projetos.find(p => p.id === projetoId);
+    if (!projeto) return;
 
     if (navigator.share) {
         navigator.share({
-            title: project.title,
-            text: project.description,
-            url: `${window.location.origin}#project-${projectId}`
+            title: projeto.titulo,
+            text: projeto.descricao,
+            url: `${window.location.origin}#project-${projetoId}`
         });
     } else {
-        // Fallback: copy to clipboard
-        const url = `${window.location.origin}#project-${projectId}`;
+        // Fallback: copiar para clipboard
+        const url = `${window.location.origin}#project-${projetoId}`;
         navigator.clipboard.writeText(url).then(() => {
-            showMessage('Link copiado para a área de transferência!', 'success');
+            mostrarMensagem('Link copiado para a área de transferência!', 'success');
+        }).catch(() => {
+            mostrarMensagem('Não foi possível copiar o link', 'error');
         });
     }
 }
 
-function loadMoreProjects() {
-    // Simulate loading more projects
-    showMessage('Carregando mais projetos...', 'success');
+function compartilharRedeSocial(plataforma, projetoId) {
+    const projeto = projetos.find(p => p.id === projetoId);
+    if (!projeto) return;
     
-    // In a real app, this would fetch more data from API
-    setTimeout(() => {
-        showMessage('Todos os projetos foram carregados.', 'success');
-    }, 1000);
+    const url = encodeURIComponent(`${window.location.origin}#project-${projetoId}`);
+    const texto = encodeURIComponent(`Ajude: ${projeto.titulo}`);
+    
+    let urlCompartilhamento = '';
+    
+    switch (plataforma) {
+        case 'facebook':
+            urlCompartilhamento = `https://www.facebook.com/sharer/sharer.php?u=${url}`;
+            break;
+        case 'twitter':
+            urlCompartilhamento = `https://twitter.com/intent/tweet?text=${texto}&url=${url}`;
+            break;
+        case 'whatsapp':
+            urlCompartilhamento = `https://wa.me/?text=${texto}%20${url}`;
+            break;
+        case 'telegram':
+            urlCompartilhamento = `https://t.me/share/url?url=${url}&text=${texto}`;
+            break;
+    }
+    
+    if (urlCompartilhamento) {
+        window.open(urlCompartilhamento, '_blank', 'width=600,height=400');
+    }
 }
 
-function showMessage(text, type) {
-    // Remove existing messages
+function mostrarMensagem(texto, tipo) {
+    // Remover mensagens existentes
     document.querySelectorAll('.message').forEach(msg => msg.remove());
 
-    const message = document.createElement('div');
-    message.className = `message ${type}`;
-    message.textContent = text;
+    const mensagem = document.createElement('div');
+    mensagem.className = `message ${tipo}`;
+    mensagem.textContent = texto;
     
-    document.body.appendChild(message);
-    message.style.position = 'fixed';
-    message.style.top = '100px';
-    message.style.right = '20px';
-    message.style.zIndex = '3000';
-    message.style.maxWidth = '300px';
+    // Estilos da mensagem
+    Object.assign(mensagem.style, {
+        position: 'fixed',
+        top: '100px',
+        right: '20px',
+        zIndex: '3000',
+        maxWidth: '300px',
+        padding: '1rem',
+        borderRadius: '5px',
+        color: 'white',
+        fontWeight: 'bold',
+        backgroundColor: tipo === 'success' ? '#28a745' : '#dc3545',
+        boxShadow: '0 5px 15px rgba(0,0,0,0.2)',
+        transform: 'translateX(100%)',
+        transition: 'transform 0.3s ease'
+    });
 
+    document.body.appendChild(mensagem);
+    
+    // Animar entrada
     setTimeout(() => {
-        message.remove();
+        mensagem.style.transform = 'translateX(0)';
+    }, 100);
+
+    // Remover após 5 segundos
+    setTimeout(() => {
+        mensagem.style.transform = 'translateX(100%)';
+        setTimeout(() => mensagem.remove(), 300);
     }, 5000);
 }
 
-function sendDonationConfirmation(email, name, amount, projectTitle) {
-    // Simulate sending confirmation email
-    console.log(`Confirmation email sent to ${email}:`);
-    console.log(`Dear ${name}, thank you for donating R$ ${formatMoney(amount)} to "${projectTitle}"`);
+// Funções de API e integração
+async function buscarTaxasCambio() {
+    try {
+        // Usar API gratuita de câmbio
+        const resposta = await fetch('https://api.exchangerate-api.com/v4/latest/BRL');
+        const dados = await resposta.json();
+        
+        taxasCambio = {
+            USD: 1 / dados.rates.USD,
+            EUR: 1 / dados.rates.EUR,
+            BTC: await buscarPrecoBitcoin()
+        };
+        
+        console.log('Taxas de câmbio carregadas:', taxasCambio);
+    } catch (error) {
+        console.log('Não foi possível buscar taxas de câmbio:', error);
+        // Taxas fallback
+        taxasCambio = {
+            USD: 5.50,
+            EUR: 6.20,
+            BTC: 0.000012
+        };
+    }
 }
 
-// Fetch quote of the day (using a free API)
-async function fetchQuoteOfTheDay() {
+async function buscarPrecoBitcoin() {
     try {
-        const response = await fetch('https://api.quotable.io/random');
-        const data = await response.json();
+        const resposta = await fetch('https://api.coingecko.com/api/v3/simple/price?ids=bitcoin&vs_currencies=brl');
+        const dados = await resposta.json();
+        return 1 / dados.bitcoin.brl;
+    } catch (error) {
+        return 0.000012; // Fallback
+    }
+}
+
+async function buscarFraseDoDia() {
+    try {
+        const resposta = await fetch('https://api.quotable.io/random');
+        const dados = await resposta.json();
         
-        // Add quote to footer or hero section
-        const quoteElement = document.createElement('div');
-        quoteElement.className = 'daily-quote';
-        quoteElement.innerHTML = `
-            <p><em>"${data.content}"</em></p>
-            <small>— ${data.author}</small>
+        const elementoFrase = document.createElement('div');
+        elementoFrase.className = 'daily-quote';
+        elementoFrase.innerHTML = `
+            <p><em>"${dados.content}"</em></p>
+            <small>— ${dados.author}</small>
         `;
         
-        // Add to hero section
-        const heroContainer = document.querySelector('.hero-container');
-        if (heroContainer) {
-            quoteElement.style.marginTop = '2rem';
-            quoteElement.style.fontStyle = 'italic';
-            quoteElement.style.opacity = '0.8';
-            quoteElement.style.textAlign = 'center';
-            heroContainer.appendChild(quoteElement);
+        const containerHero = document.querySelector('.hero-container');
+        if (containerHero) {
+            Object.assign(elementoFrase.style, {
+                marginTop: '2rem',
+                fontStyle: 'italic',
+                opacity: '0.8',
+                textAlign: 'center'
+            });
+            containerHero.appendChild(elementoFrase);
         }
     } catch (error) {
-        console.log('Could not fetch quote of the day:', error);
+        console.log('Não foi possível buscar frase do dia:', error);
     }
 }
 
-// Weather widget (using a free weather API)
-async function fetchWeatherData() {
-    try {
-        // Using wttr.in API for weather (no API key required)
-        const response = await fetch('https://wttr.in/SaoPaulo?format=j1');
-        const data = await response.json();
-        
-        const weather = data.current_condition[0];
-        const temp = weather.temp_C;
-        const desc = weather.weatherDesc[0].value;
-        
-        const weatherWidget = document.createElement('div');
-        weatherWidget.className = 'weather-widget';
-        weatherWidget.innerHTML = `
-            <div class="weather-info">
-                <i class="fas fa-thermometer-half"></i>
-                <span>${temp}°C - ${desc}</span>
-            </div>
+function configurarPagamentos() {
+    // Seleção do método de pagamento
+    const selectPagamento = document.querySelector('select[name="payment_method"]');
+    if (selectPagamento) {
+        selectPagamento.addEventListener('change', function() {
+            mostrarSecaoPagamento(this.value);
+            atualizarResumoDoacao();
+        });
+    }
+
+    // Formatação de CPF
+    const inputCPF = document.querySelector('input[name="donor_cpf"]');
+    if (inputCPF) {
+        inputCPF.addEventListener('input', function() {
+            this.value = formatarCPF(this.value);
+        });
+    }
+
+    // Formatação de CEP
+    const inputCEP = document.querySelector('input[name="donor_cep"]');
+    if (inputCEP) {
+        inputCEP.addEventListener('input', function() {
+            this.value = formatarCEP(this.value);
+            if (this.value.replace(/\D/g, '').length === 8) {
+                carregarEnderecoPorCEP(this.value);
+            }
+        });
+    }
+}
+
+function atualizarResumoDoacao() {
+    const inputValor = document.querySelector('input[name="amount"]');
+    const resumoElemento = document.getElementById('donation-summary');
+    
+    if (inputValor && resumoElemento && inputValor.value) {
+        const valor = parseFloat(inputValor.value);
+        resumoElemento.innerHTML = `
+            <h4>Resumo da Doação</h4>
+            <p>Valor: R$ ${formatarDinheiro(valor)}</p>
         `;
-        
-        // Add weather to navbar
-        const navContainer = document.querySelector('.nav-container');
-        if (navContainer && window.innerWidth > 768) {
-            weatherWidget.style.fontSize = '0.9rem';
-            weatherWidget.style.color = '#666';
-            navContainer.appendChild(weatherWidget);
-        }
-    } catch (error) {
-        console.log('Could not fetch weather data:', error);
+        resumoElemento.style.display = 'block';
+    } else if (resumoElemento) {
+        resumoElemento.style.display = 'none';
     }
 }
 
-// Initialize weather when page loads
-document.addEventListener('DOMContentLoaded', function() {
-    // Only load weather on desktop to avoid clutter
-    if (window.innerWidth > 768) {
-        fetchWeatherData();
-    }
-});
-
-// Advanced search functionality
-function setupSearchFunctionality() {
-    const searchInput = document.createElement('input');
-    searchInput.type = 'text';
-    searchInput.placeholder = 'Buscar projetos...';
-    searchInput.className = 'search-input';
-    searchInput.style.cssText = `
-        padding: 0.5rem 1rem;
-        border: 2px solid #e9ecef;
-        border-radius: 25px;
-        margin-bottom: 1rem;
-        width: 100%;
-        max-width: 300px;
-        font-size: 1rem;
+function atualizarConversaoMoeda(valor) {
+    const elementoConversao = document.getElementById('converted-amount');
+    if (!elementoConversao || !valor || !taxasCambio.USD) return;
+    
+    const valorNum = parseFloat(valor);
+    const valorUSD = valorNum / taxasCambio.USD;
+    
+    elementoConversao.innerHTML = `
+        <small>≈ $${valorUSD.toFixed(2)} USD</small>
     `;
+    elementoConversao.style.display = 'block';
+}
+
+function mostrarSecaoPagamento(metodo) {
+    document.querySelectorAll('.payment-section').forEach(section => {
+        section.style.display = 'none';
+    });
     
-    const projectsFilter = document.querySelector('.projects-filter');
-    if (projectsFilter) {
-        projectsFilter.parentNode.insertBefore(searchInput, projectsFilter);
+    const secaoSelecionada = document.getElementById(`${metodo}-section`);
+    if (secaoSelecionada) {
+        secaoSelecionada.style.display = 'block';
+    }
+}
+
+// Funções de formatação
+function formatarCPF(valor) {
+    return valor
+        .replace(/\D/g, '')
+        .replace(/(\d{3})(\d)/, '$1.$2')
+        .replace(/(\d{3})(\d)/, '$1.$2')
+        .replace(/(\d{3})(\d{1,2})/, '$1-$2')
+        .replace(/(-\d{2})\d+?$/, '$1');
+}
+
+function formatarCEP(valor) {
+    return valor
+        .replace(/\D/g, '')
+        .replace(/(\d{5})(\d)/, '$1-$2')
+        .replace(/(-\d{3})\d+?$/, '$1');
+}
+
+function formatarCartao(numero) {
+    return numero
+        .replace(/\D/g, '')
+        .replace(/(\d{4})(\d)/, '$1 $2')
+        .replace(/(\d{4})(\d)/, '$1 $2')
+        .replace(/(\d{4})(\d)/, '$1 $2')
+        .replace(/(\d{4})\d+?$/, '$1');
+}
+
+function formatarValidadeCartao(validade) {
+    return validade
+        .replace(/\D/g, '')
+        .replace(/(\d{2})(\d)/, '$1/$2')
+        .replace(/(\/\d{2})\d+?$/, '$1');
+}
+
+// Buscar endereço por CEP
+async function carregarEnderecoPorCEP(cep) {
+    try {
+        const cepLimpo = cep.replace(/\D/g, '');
+        if (cepLimpo.length !== 8) return null;
+        
+        const resposta = await fetch(`https://viacep.com.br/ws/${cepLimpo}/json/`);
+        const dados = await resposta.json();
+        
+        if (dados.erro) return null;
+        
+        // Preencher campos de endereço
+        const campoRua = document.querySelector('input[name="donor_street"]');
+        const campoBairro = document.querySelector('input[name="donor_neighborhood"]');
+        const campoCidade = document.querySelector('input[name="donor_city"]');
+        const campoEstado = document.querySelector('input[name="donor_state"]');
+        
+        if (campoRua) campoRua.value = dados.logradouro || '';
+        if (campoBairro) campoBairro.value = dados.bairro || '';
+        if (campoCidade) campoCidade.value = dados.localidade || '';
+        if (campoEstado) campoEstado.value = dados.uf || '';
+        
+        const infoEndereco = document.getElementById('address-info');
+        if (infoEndereco) {
+            infoEndereco.style.display = 'block';
+        }
+        
+        return {
+            rua: dados.logradouro,
+            bairro: dados.bairro,
+            cidade: dados.localidade,
+            estado: dados.uf
+        };
+    } catch (error) {
+        console.log('Erro ao buscar endereço:', error);
+        mostrarMensagem('Erro ao buscar endereço pelo CEP', 'error');
+        return null;
+    }
+}
+
+// Processamento de pagamentos
+async function processarPagamento(dadosDoacao) {
+    const { valor, metodo, projetoId } = dadosDoacao;
+    
+    try {
+        switch (metodo) {
+            case 'pix':
+                return await processarPagamentoPix(valor, projetoId);
+            case 'credit_card':
+                return await processarPagamentoCartao(dadosDoacao);
+            case 'boleto':
+                return await processarPagamentoBoleto(valor, projetoId);
+            default:
+                throw new Error('Método de pagamento inválido');
+        }
+    } catch (error) {
+        throw new Error(`Erro no processamento: ${error.message}`);
+    }
+}
+
+// Processamento PIX
+async function processarPagamentoPix(valor, projetoId) {
+    return new Promise((resolve) => {
+        setTimeout(() => {
+            const chavePix = gerarChavePix();
+            const qrCode = gerarQRCodePix(valor, chavePix);
+            
+            resolve({
+                status: 'pendente',
+                metodo: 'pix',
+                chavePix: chavePix,
+                qrCode: qrCode,
+                expiraEm: 30, // minutos
+                transacaoId: gerarIdTransacao()
+            });
+        }, 1000);
+    });
+}
+
+// Processamento cartão de crédito
+async function processarPagamentoCartao(dadosDoacao) {
+    return new Promise((resolve, reject) => {
+        setTimeout(() => {
+            if (validarCartaoCredito(dadosDoacao.numeroCartao)) {
+                resolve({
+                    status: 'aprovado',
+                    metodo: 'cartao_credito',
+                    transacaoId: gerarIdTransacao(),
+                    parcelas: 1,
+                    codigoAprovacao: Math.random().toString(36).substring(7).toUpperCase()
+                });
+            } else {
+                reject(new Error('Cartão inválido ou recusado'));
+            }
+        }, 2000);
+    });
+}
+
+// Processamento boleto
+async function processarPagamentoBoleto(valor, projetoId) {
+    return new Promise((resolve) => {
+        setTimeout(() => {
+            resolve({
+                status: 'pendente',
+                metodo: 'boleto',
+                urlBoleto: `https://example.com/boleto/${gerarIdTransacao()}.pdf`,
+                dataVencimento: new Date(Date.now() + 3 * 24 * 60 * 60 * 1000).toISOString().split('T')[0],
+                transacaoId: gerarIdTransacao()
+            });
+        }, 1500);
+    });
+}
+
+// Funções auxiliares de pagamento
+function gerarChavePix() {
+    return Math.random().toString(36).substring(2, 15) + '@pix.com.br';
+}
+
+function gerarQRCodePix(valor, chave) {
+    // Em uma implementação real, isso geraria um QR Code válido
+    return `data:image/svg+xml;base64,${btoa('<svg xmlns="http://www.w3.org/2000/svg" width="100" height="100"><rect width="100" height="100" fill="black"/><text x="50" y="50" fill="white" text-anchor="middle">QR</text></svg>')}`;
+}
+
+function gerarIdTransacao() {
+    return 'TXN' + Date.now() + Math.random().toString(36).substring(2, 9).toUpperCase();
+}
+
+function validarCartaoCredito(numero) {
+    // Validação básica usando algoritmo de Luhn
+    if (!numero) return false;
+    
+    const numeroLimpo = numero.replace(/\D/g, '');
+    if (numeroLimpo.length < 13 || numeroLimpo.length > 19) return false;
+    
+    let soma = 0;
+    let alternar = false;
+    
+    for (let i = numeroLimpo.length - 1; i >= 0; i--) {
+        let digito = parseInt(numeroLimpo.charAt(i));
+        
+        if (alternar) {
+            digito *= 2;
+            if (digito > 9) {
+                digito = (digito % 10) + 1;
+            }
+        }
+        
+        soma += digito;
+        alternar = !alternar;
     }
     
-    searchInput.addEventListener('input', function(e) {
-        const searchTerm = e.target.value.toLowerCase();
-        filterProjectsBySearch(searchTerm);
-    });
+    return (soma % 10) === 0;
 }
 
-function filterProjectsBySearch(searchTerm) {
-    const projectCards = document.querySelectorAll('.project-card');
+function enviarConfirmacaoDoacao(email, nome, valor, tituloProjeto) {
+    // Simular envio de email de confirmação
+    console.log(`Email de confirmação enviado para ${email}:`);
+    console.log(`Caro ${nome}, obrigado por doar R$ ${formatarDinheiro(valor)} para "${tituloProjeto}"`);
     
-    projectCards.forEach(card => {
-        const title = card.querySelector('.project-title').textContent.toLowerCase();
-        const description = card.querySelector('.project-description').textContent.toLowerCase();
-        const category = card.dataset.category.toLowerCase();
-        
-        const matches = title.includes(searchTerm) || 
-                       description.includes(searchTerm) || 
-                       category.includes(searchTerm);
-        
-        card.style.display = matches ? 'block' : 'none';
+    // Em uma implementação real, aqui seria feita a integração com serviços como:
+    // - EmailJS
+    // - SendGrid
+    // - Amazon SES
+    // - Mailgun
+}
+
+// Funcionalidades adicionais
+function carregarMaisProjetos() {
+    mostrarMensagem('Carregando mais projetos...', 'success');
+    
+    // Em uma aplicação real, isso buscaria mais dados da API
+    setTimeout(() => {
+        mostrarMensagem('Todos os projetos foram carregados.', 'success');
+    }, 1000);
+}
+
+// Sistema de busca
+function configurarBusca() {
+    const inputBusca = document.createElement('input');
+    inputBusca.type = 'text';
+    inputBusca.placeholder = 'Buscar projetos...';
+    inputBusca.className = 'search-input';
+    
+    Object.assign(inputBusca.style, {
+        padding: '0.5rem 1rem',
+        border: '2px solid #e9ecef',
+        borderRadius: '25px',
+        marginBottom: '1rem',
+        width: '100%',
+        maxWidth: '300px',
+        fontSize: '1rem'
+    });
+    
+    const filtrosProjetos = document.querySelector('.projects-filter');
+    if (filtrosProjetos) {
+        filtrosProjetos.parentNode.insertBefore(inputBusca, filtrosProjetos);
+    }
+    
+    inputBusca.addEventListener('input', function(e) {
+        const termoBusca = e.target.value.toLowerCase();
+        filtrarProjetosPorBusca(termoBusca);
     });
 }
 
-// Donation progress animation
-function animateProgressBars() {
-    const progressBars = document.querySelectorAll('.progress-fill');
+function filtrarProjetosPorBusca(termo) {
+    const cartoesProjetos = document.querySelectorAll('.project-card');
+    
+    cartoesProjetos.forEach(cartao => {
+        const titulo = cartao.querySelector('.project-title')?.textContent?.toLowerCase() || '';
+        const descricao = cartao.querySelector('.project-description')?.textContent?.toLowerCase() || '';
+        const categoria = cartao.dataset.category?.toLowerCase() || '';
+        
+        const corresponde = titulo.includes(termo) || 
+                           descricao.includes(termo) || 
+                           categoria.includes(termo);
+        
+        cartao.style.display = corresponde ? 'block' : 'none';
+    });
+}
+
+// Animações das barras de progresso
+function animarBarrasProgresso() {
+    const barrasProgresso = document.querySelectorAll('.progress-fill');
     
     const observer = new IntersectionObserver((entries) => {
         entries.forEach(entry => {
             if (entry.isIntersecting) {
-                const progressFill = entry.target;
-                const width = progressFill.style.width;
-                progressFill.style.width = '0%';
+                const barraProgresso = entry.target;
+                const largura = barraProgresso.style.width;
+                barraProgresso.style.width = '0%';
                 
                 setTimeout(() => {
-                    progressFill.style.transition = 'width 1.5s ease-out';
-                    progressFill.style.width = width;
+                    barraProgresso.style.transition = 'width 1.5s ease-out';
+                    barraProgresso.style.width = largura;
                 }, 200);
                 
-                observer.unobserve(progressFill);
+                observer.unobserve(barraProgresso);
             }
         });
     });
     
-    progressBars.forEach(bar => observer.observe(bar));
+    barrasProgresso.forEach(barra => observer.observe(barra));
 }
 
-// Initialize search functionality
-document.addEventListener('DOMContentLoaded', function() {
-    setupSearchFunctionality();
-    
-    // Animate progress bars when they come into view
-    setTimeout(() => {
-        animateProgressBars();
-    }, 1000);
-});
-
-// Social media sharing
-function shareOnSocialMedia(platform, projectId) {
-    const project = projects.find(p => p.id === projectId);
-    if (!project) return;
-    
-    const url = encodeURIComponent(`${window.location.origin}#project-${projectId}`);
-    const text = encodeURIComponent(`Ajude: ${project.title}`);
-    
-    let shareUrl = '';
-    
-    switch (platform) {
-        case 'facebook':
-            shareUrl = `https://www.facebook.com/sharer/sharer.php?u=${url}`;
-            break;
-        case 'twitter':
-            shareUrl = `https://twitter.com/intent/tweet?text=${text}&url=${url}`;
-            break;
-        case 'whatsapp':
-            shareUrl = `https://wa.me/?text=${text}%20${url}`;
-            break;
-        case 'telegram':
-            shareUrl = `https://t.me/share/url?url=${url}&text=${text}`;
-            break;
-    }
-    
-    if (shareUrl) {
-        window.open(shareUrl, '_blank', 'width=600,height=400');
-    }
-}
-
-// Enhanced project card with social sharing
-function createEnhancedProjectCard(project) {
-    const progressPercentage = Math.min((project.raised / project.goal) * 100, 100);
-    const categoryNames = {
-        'saude': 'Saúde',
-        'educacao': 'Educação',
-        'animal': 'Animais',
-        'emergencia': 'Emergência',
-        'esporte': 'Esporte',
-        'cultura': 'Cultura'
-    };
-
-    return `
-        <div class="project-card" data-category="${project.category}">
-            <div class="project-image" style="background-image: url('${project.image}')">
-                <span class="project-category">${categoryNames[project.category]}</span>
-                <div class="project-social-share">
-                    <button onclick="shareOnSocialMedia('facebook', ${project.id})" title="Compartilhar no Facebook">
-                        <i class="fab fa-facebook-f"></i>
-                    </button>
-                    <button onclick="shareOnSocialMedia('twitter', ${project.id})" title="Compartilhar no Twitter">
-                        <i class="fab fa-twitter"></i>
-                    </button>
-                    <button onclick="shareOnSocialMedia('whatsapp', ${project.id})" title="Compartilhar no WhatsApp">
-                        <i class="fab fa-whatsapp"></i>
-                    </button>
-                </div>
-            </div>
-            <div class="project-content">
-                <h3 class="project-title">${project.title}</h3>
-                <p class="project-description">${project.description}</p>
-                <div class="project-progress">
-                    <div class="progress-bar">
-                        <div class="progress-fill" style="width: ${progressPercentage}%"></div>
-                    </div>
-                </div>
-                <div class="project-stats">
-                    <span class="raised">R$ ${formatMoney(project.raised)} arrecadado</span>
-                    <span class="goal">Meta: R$ ${formatMoney(project.goal)}</span>
-                </div>
-                <div class="project-stats">
-                    <span>${project.donors} doadores</span>
-                    <span>${project.daysLeft} dias restantes</span>
-                </div>
-                <div class="project-actions">
-                    <button class="btn-secondary" onclick="shareProject(${project.id})">
-                        <i class="fas fa-share-alt"></i> Compartilhar
-                    </button>
-                    <button class="btn-donate" onclick="openDonationModal(${project.id})">
-                        <i class="fas fa-heart"></i> Doar
-                    </button>
-                </div>
-            </div>
-        </div>
-    `;
-}
-
-// Notification system
-class NotificationSystem {
+// Sistema de notificações melhorado
+class SistemaNotificacoes {
     constructor() {
-        this.notifications = [];
-        this.container = this.createContainer();
+        this.notificacoes = [];
+        this.container = this.criarContainer();
     }
     
-    createContainer() {
+    criarContainer() {
         const container = document.createElement('div');
         container.className = 'notifications-container';
-        container.style.cssText = `
-            position: fixed;
-            top: 80px;
-            right: 20px;
-            z-index: 3000;
-            max-width: 350px;
-        `;
+        Object.assign(container.style, {
+            position: 'fixed',
+            top: '80px',
+            right: '20px',
+            zIndex: '3000',
+            maxWidth: '350px'
+        });
         document.body.appendChild(container);
         return container;
     }
     
-    show(message, type = 'info', duration = 5000) {
-        const notification = document.createElement('div');
-        notification.className = `notification notification-${type}`;
-        notification.style.cssText = `
-            background: white;
-            border-left: 4px solid ${this.getColorByType(type)};
-            padding: 1rem;
-            margin-bottom: 0.5rem;
-            border-radius: 5px;
-            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
-            transform: translateX(100%);
-            transition: all 0.3s ease;
-        `;
+    mostrar(mensagem, tipo = 'info', duracao = 5000) {
+        const notificacao = document.createElement('div');
+        notificacao.className = `notification notification-${tipo}`;
         
-        notification.innerHTML = `
+        Object.assign(notificacao.style, {
+            background: 'white',
+            borderLeft: `4px solid ${this.obterCorPorTipo(tipo)}`,
+            padding: '1rem',
+            marginBottom: '0.5rem',
+            borderRadius: '5px',
+            boxShadow: '0 5px 15px rgba(0,0,0,0.1)',
+            transform: 'translateX(100%)',
+            transition: 'all 0.3s ease'
+        });
+        
+        notificacao.innerHTML = `
             <div style="display: flex; align-items: center; gap: 0.5rem;">
-                <i class="${this.getIconByType(type)}" style="color: ${this.getColorByType(type)};"></i>
-                <span>${message}</span>
+                <i class="${this.obterIconePorTipo(tipo)}" style="color: ${this.obterCorPorTipo(tipo)};"></i>
+                <span>${mensagem}</span>
                 <button onclick="this.parentElement.parentElement.remove()" style="margin-left: auto; background: none; border: none; cursor: pointer; font-size: 1.2rem;">&times;</button>
             </div>
         `;
         
-        this.container.appendChild(notification);
+        this.container.appendChild(notificacao);
         
-        // Animate in
+        // Animar entrada
         setTimeout(() => {
-            notification.style.transform = 'translateX(0)';
+            notificacao.style.transform = 'translateX(0)';
         }, 100);
         
-        // Auto remove
+        // Remover automaticamente
         setTimeout(() => {
-            notification.style.transform = 'translateX(100%)';
-            setTimeout(() => notification.remove(), 300);
-        }, duration);
+            notificacao.style.transform = 'translateX(100%)';
+            setTimeout(() => notificacao.remove(), 300);
+        }, duracao);
     }
     
-    getColorByType(type) {
-        const colors = {
+    obterCorPorTipo(tipo) {
+        const cores = {
             'success': '#28a745',
             'error': '#dc3545',
             'warning': '#ffc107',
             'info': '#007bff'
         };
-        return colors[type] || colors.info;
+        return cores[tipo] || cores.info;
     }
     
-    getIconByType(type) {
-        const icons = {
+    obterIconePorTipo(tipo) {
+        const icones = {
             'success': 'fas fa-check-circle',
             'error': 'fas fa-exclamation-circle',
             'warning': 'fas fa-exclamation-triangle',
             'info': 'fas fa-info-circle'
         };
-        return icons[type] || icons.info;
+        return icones[tipo] || icones.info;
     }
 }
 
-// Initialize notification system
-const notifications = new NotificationSystem();
+// Inicializar sistema de notificações
+const sistemaNotificacoes = new SistemaNotificacoes();
 
-// Update showMessage function to use new notification system
-function showMessage(text, type) {
-    notifications.show(text, type);
+// Atualizar função mostrarMensagem para usar o novo sistema
+function mostrarMensagem(texto, tipo) {
+    sistemaNotificacoes.mostrar(texto, tipo);
 }
 
-// Dark mode toggle
-function setupDarkMode() {
-    const darkModeToggle = document.createElement('button');
-    darkModeToggle.innerHTML = '<i class="fas fa-moon"></i>';
-    darkModeToggle.className = 'dark-mode-toggle';
-    darkModeToggle.style.cssText = `
-        position: fixed;
-        bottom: 20px;
-        right: 20px;
-        background: #007bff;
-        color: white;
-        border: none;
-        border-radius: 50%;
-        width: 50px;
-        height: 50px;
-        cursor: pointer;
-        box-shadow: 0 5px 15px rgba(0,123,255,0.3);
-        transition: all 0.3s;
-        z-index: 1000;
-    `;
-    
-    darkModeToggle.addEventListener('click', toggleDarkMode);
-    document.body.appendChild(darkModeToggle);
-    
-    // Load saved dark mode preference
-    if (localStorage.getItem('darkMode') === 'enabled') {
-        enableDarkMode();
-    }
-}
-
-function toggleDarkMode() {
-    const darkModeEnabled = document.body.classList.contains('dark-mode');
-    
-    if (darkModeEnabled) {
-        disableDarkMode();
-    } else {
-        enableDarkMode();
-    }
-}
-
-function enableDarkMode() {
-    document.body.classList.add('dark-mode');
-    localStorage.setItem('darkMode', 'enabled');
-    
-    const toggle = document.querySelector('.dark-mode-toggle');
-    if (toggle) {
-        toggle.innerHTML = '<i class="fas fa-sun"></i>';
-    }
-}
-
-function disableDarkMode() {
-    document.body.classList.remove('dark-mode');
-    localStorage.setItem('darkMode', 'disabled');
-    
-    const toggle = document.querySelector('.dark-mode-toggle');
-    if (toggle) {
-        toggle.innerHTML = '<i class="fas fa-moon"></i>';
-    }
-}
-
-// Initialize dark mode
+// Inicialização final
 document.addEventListener('DOMContentLoaded', function() {
-    setupDarkMode();
+    // Configurar busca
+    setTimeout(() => {
+        configurarBusca();
+    }, 1000);
+    
+    // Animar barras de progresso
+    setTimeout(() => {
+        animarBarrasProgresso();
+    }, 1500);
 });
 
-// Lazy loading for images
-function setupLazyLoading() {
-    const imageObserver = new IntersectionObserver((entries, observer) => {
-        entries.forEach(entry => {
-            if (entry.isIntersecting) {
-                const img = entry.target;
-                img.style.backgroundImage = img.dataset.bg;
-                img.classList.remove('lazy');
-                observer.unobserve(img);
-            }
-        });
-    });
-    
-    document.querySelectorAll('.project-image.lazy').forEach(img => {
-        imageObserver.observe(img);
-    });
-}
-
-// Performance monitoring
-function trackPerformance() {
+// Monitoramento de performance
+function monitorarPerformance() {
     if ('performance' in window) {
         window.addEventListener('load', () => {
-            const loadTime = performance.now();
-            console.log(`Page loaded in ${loadTime.toFixed(2)}ms`);
+            const tempoCarregamento = performance.now();
+            console.log(`Página carregada em ${tempoCarregamento.toFixed(2)}ms`);
             
-            // Track user engagement
-            let scrollDepth = 0;
+            // Rastrear engajamento do usuário
+            let profundidadeScroll = 0;
             window.addEventListener('scroll', () => {
-                const currentScroll = Math.round((window.scrollY / (document.body.scrollHeight - window.innerHeight)) * 100);
-                if (currentScroll > scrollDepth) {
-                    scrollDepth = currentScroll;
+                const scrollAtual = Math.round((window.scrollY / (document.body.scrollHeight - window.innerHeight)) * 100);
+                if (scrollAtual > profundidadeScroll) {
+                    profundidadeScroll = scrollAtual;
                 }
             });
             
-            // Send analytics when user leaves
+            // Enviar analytics quando usuário sair
             window.addEventListener('beforeunload', () => {
-                console.log(`Max scroll depth: ${scrollDepth}%`);
+                console.log(`Profundidade máxima de scroll: ${profundidadeScroll}%`);
             });
         });
     }
 }
 
-// Initialize performance tracking
-trackPerformance();
-
-// Service Worker registration (for offline functionality)
-if ('serviceWorker' in navigator) {
-    window.addEventListener('load', () => {
-        navigator.serviceWorker.register('/sw.js')
-            .then(registration => {
-                console.log('Service Worker registered successfully');
-            })
-            .catch(error => {
-                console.log('Service Worker registration failed');
-            });
-    });
-}
+// Inicializar monitoramento de performance
+monitorarPerformance();

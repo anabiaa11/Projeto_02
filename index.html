@@ -155,12 +155,12 @@
                     <div class="contact-item">
                         <i class="fas fa-phone"></i>
                         <h4>Telefone</h4>
-                        <p>(51) 48372-1948</p>
+                        <p>(11) 99999-9999</p>
                     </div>
                     <div class="contact-item">
                         <i class="fas fa-map-marker-alt"></i>
                         <h4>Endereço</h4>
-                        <p>Cachoeirinha, RS - Brasil</p>
+                        <p>São Paulo, SP - Brasil</p>
                     </div>
                 </div>
                 <form class="contact-form" id="contact-form">
@@ -207,7 +207,7 @@
                 </div>
             </div>
             <div class="footer-bottom">
-                <p>&copy; 2025 DoaFácil. Todos os direitos reservados.</p>
+                <p>&copy; 2024 DoaFácil. Todos os direitos reservados.</p>
             </div>
         </div>
     </footer>
@@ -270,6 +270,7 @@
                 <div class="form-group">
                     <label>Valor Personalizado (R$)</label>
                     <input type="number" name="amount" min="1" step="0.01" placeholder="Digite o valor">
+                    <div id="converted-amount" class="converted-amount"></div>
                 </div>
                 <div class="form-group">
                     <label>Seu Nome</label>
@@ -280,14 +281,100 @@
                     <input type="email" name="donor_email" required>
                 </div>
                 <div class="form-group">
+                    <label>CPF</label>
+                    <input type="text" name="donor_cpf" placeholder="000.000.000-00" maxlength="14" required>
+                </div>
+                <div class="form-group">
+                    <label>CEP</label>
+                    <input type="text" name="donor_cep" placeholder="00000-000" maxlength="9">
+                    <div id="address-info" class="address-info"></div>
+                </div>
+                <div class="form-group">
+                    <label>Método de Pagamento</label>
+                    <select name="payment_method" required>
+                        <option value="">Selecione o método</option>
+                        <option value="pix">PIX (Instantâneo)</option>
+                        <option value="credit_card">Cartão de Crédito</option>
+                        <option value="boleto">Boleto Bancário</option>
+                    </select>
+                </div>
+                <div id="pix-section" class="payment-section" style="display: none;">
+                    <div class="pix-info">
+                        <h4><i class="fas fa-qrcode"></i> Pagamento via PIX</h4>
+                        <p>Escaneie o QR Code ou copie a chave PIX</p>
+                        <div id="pix-qrcode"></div>
+                        <div class="pix-key">
+                            <input type="text" id="pix-key-input" readonly>
+                            <button type="button" onclick="copyPixKey()" class="btn-copy">
+                                <i class="fas fa-copy"></i> Copiar
+                            </button>
+                        </div>
+                    </div>
+                </div>
+                <div id="card-section" class="payment-section" style="display: none;">
+                    <div class="card-form">
+                        <div class="form-group">
+                            <label>Número do Cartão</label>
+                            <input type="text" name="card_number" placeholder="0000 0000 0000 0000" maxlength="19">
+                        </div>
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label>Validade</label>
+                                <input type="text" name="card_expiry" placeholder="MM/AA" maxlength="5">
+                            </div>
+                            <div class="form-group">
+                                <label>CVV</label>
+                                <input type="text" name="card_cvv" placeholder="123" maxlength="4">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label>Nome no Cartão</label>
+                            <input type="text" name="card_name" placeholder="NOME IMPRESSO NO CARTÃO">
+                        </div>
+                    </div>
+                </div>
+                <div class="form-group">
                     <label>Mensagem (opcional)</label>
                     <textarea name="message" rows="3" placeholder="Deixe uma mensagem de apoio"></textarea>
                 </div>
+                <div class="donation-summary">
+                    <div class="summary-item">
+                        <span>Valor da doação:</span>
+                        <span id="summary-amount">R$ 0,00</span>
+                    </div>
+                    <div class="summary-item">
+                        <span>Taxa da plataforma:</span>
+                        <span id="summary-fee">R$ 0,00 (0%)</span>
+                    </div>
+                    <div class="summary-item total">
+                        <span>Total:</span>
+                        <span id="summary-total">R$ 0,00</span>
+                    </div>
+                </div>
                 <div class="form-actions">
                     <button type="button" class="btn-secondary" onclick="closeDonationModal()">Cancelar</button>
-                    <button type="submit" class="btn-primary">Confirmar Doação</button>
+                    <button type="submit" class="btn-primary">
+                        <i class="fas fa-heart"></i> Confirmar Doação
+                    </button>
                 </div>
             </form>
+        </div>
+    </div>
+
+    <!-- Success Modal -->
+    <div id="success-modal" class="modal">
+        <div class="modal-content success-content">
+            <div class="success-header">
+                <i class="fas fa-check-circle"></i>
+                <h2>Doação Realizada com Sucesso!</h2>
+            </div>
+            <div id="success-details" class="success-details"></div>
+            <div class="success-actions">
+                <button class="btn-primary" onclick="closeSuccessModal()">Fechar</button>
+                <button class="btn-secondary" onclick="shareSuccess()">
+                    <i class="fas fa-share-alt"></i> Compartilhar
+                </button>
+            </div>
         </div>
     </div>
 
