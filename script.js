@@ -1,4 +1,3 @@
- 
 // Variáveis Globais
 let projetos = [];
 let filtroAtual = 'all';
@@ -73,7 +72,9 @@ const projetosAmostra = [
         doadores: 34,
         diasRestantes: 40
     }
-];// Inicializar aplicação quando DOM carregar
+];
+
+// Inicializar aplicação quando DOM carregar
 document.addEventListener('DOMContentLoaded', function() {
     inicializarApp();
     configurarEventListeners();
@@ -82,8 +83,8 @@ document.addEventListener('DOMContentLoaded', function() {
     buscarFraseDoDia();
     buscarTaxasCambio();
     configurarPagamentos();
+    monitorarPerformance();
 });
-
 
 // Inicializar aplicação
 function inicializarApp() {
@@ -205,6 +206,16 @@ function configurarEventListeners() {
         if (e.target === modalDoacao) fecharModalDoacao();
         if (e.target === modalSucesso) fecharModalSucesso();
     });
+
+    // Configurar busca
+    setTimeout(() => {
+        configurarBusca();
+    }, 1000);
+    
+    // Animar barras de progresso
+    setTimeout(() => {
+        animarBarrasProgresso();
+    }, 1500);
 }
 
 // Carregar e renderizar projetos
@@ -352,7 +363,6 @@ function processarContato(e) {
     botaoSubmit.innerHTML = '<span class="loading-spinner"></span> Enviando...';
     botaoSubmit.disabled = true;
 
-    
     setTimeout(() => {
         const dadosEmail = {
             nome: formData.get('name'),
@@ -370,7 +380,7 @@ function processarContato(e) {
     }, 1500);
 }
 
-
+// Funções de modal
 function abrirModal() {
     const modal = document.getElementById('project-modal');
     if (modal) {
@@ -407,7 +417,6 @@ function abrirModalDoacao(projetoId) {
         modal.style.display = 'block';
         document.body.style.overflow = 'hidden';
         
-        
         const form = modal.querySelector('form');
         if (form) form.reset();
         
@@ -424,7 +433,6 @@ function fecharModalDoacao() {
     if (modal) {
         modal.style.display = 'none';
         document.body.style.overflow = 'auto';
-        
         
         const form = document.getElementById('donation-form');
         if (form) form.reset();
@@ -449,14 +457,15 @@ function fecharModalSucesso() {
     }
 }
 
-
+// Função para formatar dinheiro (CORRIGIDA)
 function formatarDinheiro(valor) {
     return new Intl.NumberFormat('pt-BR', {
-        minimumFractionDigits: 2,
-        maximumFractionDigits: 2
+        style: 'currency',
+        currency: 'BRL'
     }).format(valor);
 }
 
+// Função para obter imagem padrão (IMPLEMENTADA)
 function obterImagemPadrao(categoria) {
     const imagensPadrao = {
         'saude': 'https://images.unsplash.com/photo-1576091160399-112ba8d25d1f?ixlib=rb-4.0.3&auto=format&fit=crop&w=1000&q=80',
@@ -469,38 +478,49 @@ function obterImagemPadrao(categoria) {
     return imagensPadrao[categoria] || imagensPadrao['saude'];
 }
 
+// Função para atualizar estatísticas (IMPLEMENTADA)
 function atualizarEstatisticas() {
-    const totalDoado = projetos.reduce((soma, projeto) => soma + projeto.arrecadado, 0);
+    const totalArrecadado = projetos.reduce((total, projeto) => total + projeto.arrecadado, 0);
     const totalProjetos = projetos.length;
-    const totalDoadores = projetos.reduce((soma, projeto) => soma + projeto.doadores, 0);
+    const totalDoadores = projetos.reduce((total, projeto) => total + projeto.doadores, 0);
 
-    
-    animarContador('total-donated', 0, totalDoado, 'currency');
-    animarContador('total-projects', 0, totalProjetos, 'number');
-    animarContador('total-donors', 0, totalDoadores, 'number');
+    animarContador('total-donated', totalArrecadado, true);
+    animarContador('total-projects', totalProjetos);
+    animarContador('total-donors', totalDoadores);
 }
 
-function animarContador(elementId, inicio, fim, tipo) {
-    const elemento = document.getElementById(elementId);
+// Função para animar contadores
+function animarContador(elementoId, valorFinal, isDinheiro = false) {
+    const elemento = document.getElementById(elementoId);
     if (!elemento) return;
 
+    const valorInicial = 0;
     const duracao = 2000;
-    const incremento = (fim - inicio) / (duracao / 16);
-    let atual = inicio;
+    const incremento = valorFinal / (duracao / 16);
+    let atual = valorInicial;
 
     const timer = setInterval(() => {
         atual += incremento;
-        if (atual >= fim) {
-            atual = fim;
+        if (atual >= valorFinal) {
+            atual = valorFinal;
             clearInterval(timer);
         }
-
-        if (tipo === 'currency') {
-            elemento.textContent = `R$ ${formatarDinheiro(Math.floor(atual))}`;
+        
+        if (isDinheiro) {
+            elemento.textContent = formatarDinheiro(Math.floor(atual));
         } else {
             elemento.textContent = Math.floor(atual).toLocaleString('pt-BR');
         }
     }, 16);
+}
+
+// Função para carregar mais projetos (IMPLEMENTADA)
+function loadMoreProjects() {
+    mostrarMensagem('Carregando mais projetos...', 'success');
+    
+    setTimeout(() => {
+        mostrarMensagem('Todos os projetos foram carregados.', 'success');
+    }, 1000);
 }
 
 function compartilharProjeto(projetoId) {
@@ -512,9 +532,8 @@ function compartilharProjeto(projetoId) {
             title: projeto.titulo,
             text: projeto.descricao,
             url: `${window.location.origin}#project-${projetoId}`
-        });
+        }).catch(err => console.log('Erro ao compartilhar:', err));
     } else {
-        
         const url = `${window.location.origin}#project-${projetoId}`;
         navigator.clipboard.writeText(url).then(() => {
             mostrarMensagem('Link copiado para a área de transferência!', 'success');
@@ -551,454 +570,6 @@ function compartilharRedeSocial(plataforma, projetoId) {
     if (urlCompartilhamento) {
         window.open(urlCompartilhamento, '_blank', 'width=600,height=400');
     }
-}
-
-function mostrarMensagem(texto, tipo) {
-    
-    document.querySelectorAll('.message').forEach(msg => msg.remove());
-
-    const mensagem = document.createElement('div');
-    mensagem.className = `message ${tipo}`;
-    mensagem.textContent = texto;
-    
-    
-    Object.assign(mensagem.style, {
-        position: 'fixed',
-        top: '100px',
-        right: '20px',
-        zIndex: '3000',
-        maxWidth: '300px',
-        padding: '1rem',
-        borderRadius: '5px',
-        color: 'white',
-        fontWeight: 'bold',
-        backgroundColor: tipo === 'success' ? '#28a745' : '#dc3545',
-        boxShadow: '0 5px 15px rgba(0,0,0,0.2)',
-        transform: 'translateX(100%)',
-        transition: 'transform 0.3s ease'
-    });
-
-    document.body.appendChild(mensagem);
-    
-   
-    setTimeout(() => {
-        mensagem.style.transform = 'translateX(0)';
-    }, 100);
-
-    
-    setTimeout(() => {
-        mensagem.style.transform = 'translateX(100%)';
-        setTimeout(() => mensagem.remove(), 300);
-    }, 5000);
-}
-
-
-async function buscarTaxasCambio() {
-    try {
-        
-        const resposta = await fetch('https://api.exchangerate-api.com/v4/latest/BRL');
-        const dados = await resposta.json();
-        
-        taxasCambio = {
-            USD: 1 / dados.rates.USD,
-            EUR: 1 / dados.rates.EUR,
-            BTC: await buscarPrecoBitcoin()
-        };
-        
-        console.log('Taxas de câmbio carregadas:', taxasCambio);
-    } catch (error) {
-        console.log('Não foi possível buscar taxas de câmbio:', error);
-        // Taxas fallback
-        taxasCambio = {
-            USD: 5.50,
-            EUR: 6.20,
-            BTC: 0.000012
-        };
-    }
-}
-
-async function buscarPrecoBitcoin() {
-    try {
-        const resposta = await fetch('https://api.coingecko.com/api/v3/simple/price?ids=bitcoin&vs_currencies=brl');
-        const dados = await resposta.json();
-        return 1 / dados.bitcoin.brl;
-    } catch (error) {
-        return 0.000012;
-    }
-}
-
-async function buscarFraseDoDia() {
-    try {
-        const resposta = await fetch('https://api.quotable.io/random');
-        const dados = await resposta.json();
-        
-        const elementoFrase = document.createElement('div');
-        elementoFrase.className = 'daily-quote';
-        elementoFrase.innerHTML = `
-            <p><em>"${dados.content}"</em></p>
-            <small>— ${dados.author}</small>
-        `;
-        
-        const containerHero = document.querySelector('.hero-container');
-        if (containerHero) {
-            Object.assign(elementoFrase.style, {
-                marginTop: '2rem',
-                fontStyle: 'italic',
-                opacity: '0.8',
-                textAlign: 'center'
-            });
-            containerHero.appendChild(elementoFrase);
-        }
-    } catch (error) {
-        console.log('Não foi possível buscar frase do dia:', error);
-    }
-}
-
-function configurarPagamentos() {
-    
-    const selectPagamento = document.querySelector('select[name="payment_method"]');
-    if (selectPagamento) {
-        selectPagamento.addEventListener('change', function() {
-            mostrarSecaoPagamento(this.value);
-            atualizarResumoDoacao();
-        });
-    }
-
-    
-    const inputCPF = document.querySelector('input[name="donor_cpf"]');
-    if (inputCPF) {
-        inputCPF.addEventListener('input', function() {
-            this.value = formatarCPF(this.value);
-        });
-    }
-
-    
-    const inputCEP = document.querySelector('input[name="donor_cep"]');
-    if (inputCEP) {
-        inputCEP.addEventListener('input', function() {
-            this.value = formatarCEP(this.value);
-            if (this.value.replace(/\D/g, '').length === 8) {
-                carregarEnderecoPorCEP(this.value);
-            }
-        });
-    }
-}
-
-function atualizarResumoDoacao() {
-    const inputValor = document.querySelector('input[name="amount"]');
-    const resumoElemento = document.getElementById('donation-summary');
-    
-    if (inputValor && resumoElemento && inputValor.value) {
-        const valor = parseFloat(inputValor.value);
-        resumoElemento.innerHTML = `
-            <h4>Resumo da Doação</h4>
-            <p>Valor: R$ ${formatarDinheiro(valor)}</p>
-        `;
-        resumoElemento.style.display = 'block';
-    } else if (resumoElemento) {
-        resumoElemento.style.display = 'none';
-    }
-}
-
-function atualizarConversaoMoeda(valor) {
-    const elementoConversao = document.getElementById('converted-amount');
-    if (!elementoConversao || !valor || !taxasCambio.USD) return;
-    
-    const valorNum = parseFloat(valor);
-    const valorUSD = valorNum / taxasCambio.USD;
-    
-    elementoConversao.innerHTML = `
-        <small>≈ $${valorUSD.toFixed(2)} USD</small>
-    `;
-    elementoConversao.style.display = 'block';
-}
-
-function mostrarSecaoPagamento(metodo) {
-    document.querySelectorAll('.payment-section').forEach(section => {
-        section.style.display = 'none';
-    });
-    
-    const secaoSelecionada = document.getElementById(`${metodo}-section`);
-    if (secaoSelecionada) {
-        secaoSelecionada.style.display = 'block';
-    }
-}
-
-
-function formatarCPF(valor) {
-    return valor
-        .replace(/\D/g, '')
-        .replace(/(\d{3})(\d)/, '$1.$2')
-        .replace(/(\d{3})(\d)/, '$1.$2')
-        .replace(/(\d{3})(\d{1,2})/, '$1-$2')
-        .replace(/(-\d{2})\d+?$/, '$1');
-}
-
-function formatarCEP(valor) {
-    return valor
-        .replace(/\D/g, '')
-        .replace(/(\d{5})(\d)/, '$1-$2')
-        .replace(/(-\d{3})\d+?$/, '$1');
-}
-
-function formatarCartao(numero) {
-    return numero
-        .replace(/\D/g, '')
-        .replace(/(\d{4})(\d)/, '$1 $2')
-        .replace(/(\d{4})(\d)/, '$1 $2')
-        .replace(/(\d{4})(\d)/, '$1 $2')
-        .replace(/(\d{4})\d+?$/, '$1');
-}
-
-function formatarValidadeCartao(validade) {
-    return validade
-        .replace(/\D/g, '')
-        .replace(/(\d{2})(\d)/, '$1/$2')
-        .replace(/(\/\d{2})\d+?$/, '$1');
-}
-
-
-async function carregarEnderecoPorCEP(cep) {
-    try {
-        const cepLimpo = cep.replace(/\D/g, '');
-        if (cepLimpo.length !== 8) return null;
-        
-        const resposta = await fetch(`https://viacep.com.br/ws/${cepLimpo}/json/`);
-        const dados = await resposta.json();
-        
-        if (dados.erro) return null;
-        
-        
-        const campoRua = document.querySelector('input[name="donor_street"]');
-        const campoBairro = document.querySelector('input[name="donor_neighborhood"]');
-        const campoCidade = document.querySelector('input[name="donor_city"]');
-        const campoEstado = document.querySelector('input[name="donor_state"]');
-        
-        if (campoRua) campoRua.value = dados.logradouro || '';
-        if (campoBairro) campoBairro.value = dados.bairro || '';
-        if (campoCidade) campoCidade.value = dados.localidade || '';
-        if (campoEstado) campoEstado.value = dados.uf || '';
-        
-        const infoEndereco = document.getElementById('address-info');
-        if (infoEndereco) {
-            infoEndereco.style.display = 'block';
-        }
-        
-        return {
-            rua: dados.logradouro,
-            bairro: dados.bairro,
-            cidade: dados.localidade,
-            estado: dados.uf
-        };
-    } catch (error) {
-        console.log('Erro ao buscar endereço:', error);
-        mostrarMensagem('Erro ao buscar endereço pelo CEP', 'error');
-        return null;
-    }
-}
-
-
-async function processarPagamento(dadosDoacao) {
-    const { valor, metodo, projetoId } = dadosDoacao;
-    
-    try {
-        switch (metodo) {
-            case 'pix':
-                return await processarPagamentoPix(valor, projetoId);
-            case 'credit_card':
-                return await processarPagamentoCartao(dadosDoacao);
-            case 'boleto':
-                return await processarPagamentoBoleto(valor, projetoId);
-            default:
-                throw new Error('Método de pagamento inválido');
-        }
-    } catch (error) {
-        throw new Error(`Erro no processamento: ${error.message}`);
-    }
-}
-
-
-async function processarPagamentoPix(valor, projetoId) {
-    return new Promise((resolve) => {
-        setTimeout(() => {
-            const chavePix = gerarChavePix();
-            const qrCode = gerarQRCodePix(valor, chavePix);
-            
-            resolve({
-                status: 'pendente',
-                metodo: 'pix',
-                chavePix: chavePix,
-                qrCode: qrCode,
-                expiraEm: 30, 
-                transacaoId: gerarIdTransacao()
-            });
-        }, 1000);
-    });
-}
-
-
-async function processarPagamentoCartao(dadosDoacao) {
-    return new Promise((resolve, reject) => {
-        setTimeout(() => {
-            if (validarCartaoCredito(dadosDoacao.numeroCartao)) {
-                resolve({
-                    status: 'aprovado',
-                    metodo: 'cartao_credito',
-                    transacaoId: gerarIdTransacao(),
-                    parcelas: 1,
-                    codigoAprovacao: Math.random().toString(36).substring(7).toUpperCase()
-                });
-            } else {
-                reject(new Error('Cartão inválido ou recusado'));
-            }
-        }, 2000);
-    });
-}
-
-
-async function processarPagamentoBoleto(valor, projetoId) {
-    return new Promise((resolve) => {
-        setTimeout(() => {
-            resolve({
-                status: 'pendente',
-                metodo: 'boleto',
-                urlBoleto: `https://example.com/boleto/${gerarIdTransacao()}.pdf`,
-                dataVencimento: new Date(Date.now() + 3 * 24 * 60 * 60 * 1000).toISOString().split('T')[0],
-                transacaoId: gerarIdTransacao()
-            });
-        }, 1500);
-    });
-}
-
-
-function gerarChavePix() {
-    return Math.random().toString(36).substring(2, 15) + '@pix.com.br';
-}
-
-function gerarQRCodePix(valor, chave) {
-   
-    return `data:image/svg+xml;base64,${btoa('<svg xmlns="http://www.w3.org/2000/svg" width="100" height="100"><rect width="100" height="100" fill="black"/><text x="50" y="50" fill="white" text-anchor="middle">QR</text></svg>')}`;
-}
-
-function gerarIdTransacao() {
-    return 'TXN' + Date.now() + Math.random().toString(36).substring(2, 9).toUpperCase();
-}
-
-function validarCartaoCredito(numero) {
-    
-    if (!numero) return false;
-    
-    const numeroLimpo = numero.replace(/\D/g, '');
-    if (numeroLimpo.length < 13 || numeroLimpo.length > 19) return false;
-    
-    let soma = 0;
-    let alternar = false;
-    
-    for (let i = numeroLimpo.length - 1; i >= 0; i--) {
-        let digito = parseInt(numeroLimpo.charAt(i));
-        
-        if (alternar) {
-            digito *= 2;
-            if (digito > 9) {
-                digito = (digito % 10) + 1;
-            }
-        }
-        
-        soma += digito;
-        alternar = !alternar;
-    }
-    
-    return (soma % 10) === 0;
-}
-
-function enviarConfirmacaoDoacao(email, nome, valor, tituloProjeto) {
-    
-    console.log(`Email de confirmação enviado para ${email}:`);
-    console.log(`Caro ${nome}, obrigado por doar R$ ${formatarDinheiro(valor)} para "${tituloProjeto}"`);
-    
-    // Em uma implementação real, aqui seria feita a integração com serviços como:
-    // - EmailJS
-    // - SendGrid
-    // - Amazon SES
-    // - Mailgun
-}
-
-
-function carregarMaisProjetos() {
-    mostrarMensagem('Carregando mais projetos...', 'success');
-    
-    
-    setTimeout(() => {
-        mostrarMensagem('Todos os projetos foram carregados.', 'success');
-    }, 1000);
-}
-
-
-function configurarBusca() {
-    const inputBusca = document.createElement('input');
-    inputBusca.type = 'text';
-    inputBusca.placeholder = 'Buscar projetos...';
-    inputBusca.className = 'search-input';
-    
-    Object.assign(inputBusca.style, {
-        padding: '0.5rem 1rem',
-        border: '2px solid #e9ecef',
-        borderRadius: '25px',
-        marginBottom: '1rem',
-        width: '100%',
-        maxWidth: '300px',
-        fontSize: '1rem'
-    });
-    
-    const filtrosProjetos = document.querySelector('.projects-filter');
-    if (filtrosProjetos) {
-        filtrosProjetos.parentNode.insertBefore(inputBusca, filtrosProjetos);
-    }
-    
-    inputBusca.addEventListener('input', function(e) {
-        const termoBusca = e.target.value.toLowerCase();
-        filtrarProjetosPorBusca(termoBusca);
-    });
-}
-
-function filtrarProjetosPorBusca(termo) {
-    const cartoesProjetos = document.querySelectorAll('.project-card');
-    
-    cartoesProjetos.forEach(cartao => {
-        const titulo = cartao.querySelector('.project-title')?.textContent?.toLowerCase() || '';
-        const descricao = cartao.querySelector('.project-description')?.textContent?.toLowerCase() || '';
-        const categoria = cartao.dataset.category?.toLowerCase() || '';
-        
-        const corresponde = titulo.includes(termo) || 
-                           descricao.includes(termo) || 
-                           categoria.includes(termo);
-        
-        cartao.style.display = corresponde ? 'block' : 'none';
-    });
-}
-
-// Animações das barras de progresso
-function animarBarrasProgresso() {
-    const barrasProgresso = document.querySelectorAll('.progress-fill');
-    
-    const observer = new IntersectionObserver((entries) => {
-        entries.forEach(entry => {
-            if (entry.isIntersecting) {
-                const barraProgresso = entry.target;
-                const largura = barraProgresso.style.width;
-                barraProgresso.style.width = '0%';
-                
-                setTimeout(() => {
-                    barraProgresso.style.transition = 'width 1.5s ease-out';
-                    barraProgresso.style.width = largura;
-                }, 200);
-                
-                observer.unobserve(barraProgresso);
-            }
-        });
-    });
-    
-    barrasProgresso.forEach(barra => observer.observe(barra));
 }
 
 // Sistema de notificações melhorado
@@ -1083,25 +654,377 @@ class SistemaNotificacoes {
 // Inicializar sistema de notificações
 const sistemaNotificacoes = new SistemaNotificacoes();
 
-// Atualizar função mostrarMensagem para usar o novo sistema
+// Função mostrarMensagem usando o novo sistema
 function mostrarMensagem(texto, tipo) {
     sistemaNotificacoes.mostrar(texto, tipo);
 }
 
-// Inicialização final
-document.addEventListener('DOMContentLoaded', function() {
-    // Configurar busca
-    setTimeout(() => {
-        configurarBusca();
-    }, 1000);
-    
-    // Animar barras de progresso
-    setTimeout(() => {
-        animarBarrasProgresso();
-    }, 1500);
-});
+// Buscar taxas de câmbio
+async function buscarTaxasCambio() {
+    try {
+        const resposta = await fetch('https://api.exchangerate-api.com/v4/latest/BRL');
+        const dados = await resposta.json();
+        
+        taxasCambio = {
+            USD: 1 / dados.rates.USD,
+            EUR: 1 / dados.rates.EUR,
+            BTC: await buscarPrecoBitcoin()
+        };
+        
+        console.log('Taxas de câmbio carregadas:', taxasCambio);
+    } catch (error) {
+        console.log('Não foi possível buscar taxas de câmbio:', error);
+        // Taxas fallback
+        taxasCambio = {
+            USD: 5.50,
+            EUR: 6.20,
+            BTC: 0.000012
+        };
+    }
+}
 
-// Monitoramento de performance
+async function buscarPrecoBitcoin() {
+    try {
+        const resposta = await fetch('https://api.coingecko.com/api/v3/simple/price?ids=bitcoin&vs_currencies=brl');
+        const dados = await resposta.json();
+        return 1 / dados.bitcoin.brl;
+    } catch (error) {
+        return 0.000012;
+    }
+}
+
+async function buscarFraseDoDia() {
+    try {
+        const resposta = await fetch('https://api.quotable.io/random');
+        const dados = await resposta.json();
+        
+        const elementoFrase = document.createElement('div');
+        elementoFrase.className = 'daily-quote';
+        elementoFrase.innerHTML = `
+            <p><em>"${dados.content}"</em></p>
+            <small>— ${dados.author}</small>
+        `;
+        
+        const containerHero = document.querySelector('.hero-container');
+        if (containerHero) {
+            Object.assign(elementoFrase.style, {
+                marginTop: '2rem',
+                fontStyle: 'italic',
+                opacity: '0.8',
+                textAlign: 'center'
+            });
+            containerHero.appendChild(elementoFrase);
+        }
+    } catch (error) {
+        console.log('Não foi possível buscar frase do dia:', error);
+    }
+}
+
+function configurarPagamentos() {
+    const selectPagamento = document.querySelector('select[name="payment_method"]');
+    if (selectPagamento) {
+        selectPagamento.addEventListener('change', function() {
+            mostrarSecaoPagamento(this.value);
+            atualizarResumoDoacao();
+        });
+    }
+
+    const inputCPF = document.querySelector('input[name="donor_cpf"]');
+    if (inputCPF) {
+        inputCPF.addEventListener('input', function() {
+            this.value = formatarCPF(this.value);
+        });
+    }
+
+    const inputCEP = document.querySelector('input[name="donor_cep"]');
+    if (inputCEP) {
+        inputCEP.addEventListener('input', function() {
+            this.value = formatarCEP(this.value);
+            if (this.value.replace(/\D/g, '').length === 8) {
+                carregarEnderecoPorCEP(this.value);
+            }
+        });
+    }
+}
+
+function atualizarResumoDoacao() {
+    const inputValor = document.querySelector('input[name="amount"]');
+    const resumoElemento = document.getElementById('donation-summary');
+    
+    if (inputValor && resumoElemento && inputValor.value) {
+        const valor = parseFloat(inputValor.value);
+        resumoElemento.innerHTML = `
+            <h4>Resumo da Doação</h4>
+            <p>Valor: R$ ${formatarDinheiro(valor)}</p>
+        `;
+        resumoElemento.style.display = 'block';
+    } else if (resumoElemento) {
+        resumoElemento.style.display = 'none';
+    }
+}
+
+function atualizarConversaoMoeda(valor) {
+    const elementoConversao = document.getElementById('converted-amount');
+    if (!elementoConversao || !valor || !taxasCambio.USD) return;
+    
+    const valorNum = parseFloat(valor);
+    const valorUSD = valorNum / taxasCambio.USD;
+    
+    elementoConversao.innerHTML = `
+        <small>≈ $${valorUSD.toFixed(2)} USD</small>
+    `;
+    elementoConversao.style.display = 'block';
+}
+
+function mostrarSecaoPagamento(metodo) {
+    document.querySelectorAll('.payment-section').forEach(section => {
+        section.style.display = 'none';
+    });
+    
+    const secaoSelecionada = document.getElementById(`${metodo}-section`);
+    if (secaoSelecionada) {
+        secaoSelecionada.style.display = 'block';
+    }
+}
+
+// Funções de formatação
+function formatarCPF(valor) {
+    return valor
+        .replace(/\D/g, '')
+        .replace(/(\d{3})(\d)/, '$1.$2')
+        .replace(/(\d{3})(\d)/, '$1.$2')
+        .replace(/(\d{3})(\d{1,2})/, '$1-$2')
+        .replace(/(-\d{2})\d+?$/, '$1');
+}
+
+function formatarCEP(valor) {
+    return valor
+        .replace(/\D/g, '')
+        .replace(/(\d{5})(\d)/, '$1-$2')
+        .replace(/(-\d{3})\d+?$/, '$1');
+}
+
+function formatarCartao(numero) {
+    return numero
+        .replace(/\D/g, '')
+        .replace(/(\d{4})(\d)/, '$1 $2')
+        .replace(/(\d{4})(\d)/, '$1 $2')
+        .replace(/(\d{4})(\d)/, '$1 $2')
+        .replace(/(\d{4})\d+?$/, '$1');
+}
+
+function formatarValidadeCartao(validade) {
+    return validade
+        .replace(/\D/g, '')
+        .replace(/(\d{2})(\d)/, '$1/$2')
+        .replace(/(\/\d{2})\d+?$/, '$1');
+}
+
+// Buscar endereço por CEP
+async function carregarEnderecoPorCEP(cep) {
+    try {
+        const cepLimpo = cep.replace(/\D/g, '');
+        if (cepLimpo.length !== 8) return null;
+        
+        const resposta = await fetch(`https://viacep.com.br/ws/${cepLimpo}/json/`);
+        const dados = await resposta.json();
+        
+        if (dados.erro) return null;
+        
+        const campoRua = document.querySelector('input[name="donor_street"]');
+        const campoBairro = document.querySelector('input[name="donor_neighborhood"]');
+        const campoCidade = document.querySelector('input[name="donor_city"]');
+        const campoEstado = document.querySelector('input[name="donor_state"]');
+        
+        if (campoRua) campoRua.value = dados.logradouro || '';
+        if (campoBairro) campoBairro.value = dados.bairro || '';
+        if (campoCidade) campoCidade.value = dados.localidade || '';
+        if (campoEstado) campoEstado.value = dados.uf || '';
+        
+        const infoEndereco = document.getElementById('address-info');
+        if (infoEndereco) {
+            infoEndereco.style.display = 'block';
+        }
+        
+        return {
+            rua: dados.logradouro,
+            bairro: dados.bairro,
+            cidade: dados.localidade,
+            estado: dados.uf
+        };
+    } catch (error) {
+        console.log('Erro ao buscar endereço:', error);
+        mostrarMensagem('Erro ao buscar endereço pelo CEP', 'error');
+        return null;
+    }
+}
+
+// Funções de pagamento
+async function processarPagamento(dadosDoacao) {
+    const { valor, metodo, projetoId } = dadosDoacao;
+    
+    try {
+        switch (metodo) {
+            case 'pix':
+                return await processarPagamentoPix(valor, projetoId);
+            case 'credit_card':
+                return await processarPagamentoCartao(dadosDoacao);
+            case 'boleto':
+                return await processarPagamentoBoleto(valor, projetoId);
+            default:
+                throw new Error('Método de pagamento inválido');
+        }
+    } catch (error) {
+        throw new Error(`Erro no processamento: ${error.message}`);
+    }
+}
+
+async function processarPagamentoPix(valor, projetoId) {
+    return new Promise((resolve) => {
+        setTimeout(() => {
+            const chavePix = gerarChavePix();
+            const qrCode = gerarQRCodePix(valor, chavePix);
+            
+            resolve({
+                status: 'pendente',
+                metodo: 'pix',
+                chavePix: chavePix,
+                qrCode: qrCode,
+                expiraEm: 30,
+                transacaoId: gerarIdTransacao()
+            });
+        }, 1000);
+    });
+}
+
+async function processarPagamentoCartao(dadosDoacao) {
+    return new Promise((resolve, reject) => {
+        setTimeout(() => {
+            if (validarCartaoCredito(dadosDoacao.numeroCartao)) {
+                resolve({
+                    status: 'aprovado',
+                    metodo: 'cartao_credito',
+                    transacaoId: gerarIdTransacao(),
+                    parcelas: 1,
+                    codigoAprovacao: Math.random().toString(36).substring(7).toUpperCase()
+                });
+            } else {
+                reject(new Error('Cartão inválido ou recusado'));
+            }
+        }, 2000);
+    });
+}
+
+async function processarPagamentoBoleto(valor, projetoId) {
+    return new Promise((resolve) => {
+        setTimeout(() => {
+            resolve({
+                status: 'pendente',
+                metodo: 'boleto',
+                urlBoleto: `https://example.com/boleto/${gerarIdTransacao()}.pdf`,
+                dataVencimento: new Date(Date.now() + 3 * 24 * 60 * 60 * 1000).toISOString().split('T')[0],
+                transacaoId: gerarIdTransacao()
+            });
+        }, 1500);
+    });
+}
+
+// Funções auxiliares de pagamento
+function gerarChavePix() {
+    return Math.random().toString(36).substring(2, 15) + '@pix.com.br';
+}
+
+function gerarQRCodePix(valor, chave) {
+    return `data:image/svg+xml;base64,${btoa('<svg xmlns="http://www.w3.org/2000/svg" width="100" height="100"><rect width="100" height="100" fill="black"/><text x="50" y="50" fill="white" text-anchor="middle">QR</text></svg>')}`;
+}
+
+function gerarIdTransacao() {
+    return 'TXN' + Date.now() + Math.random().toString(36).substring(2, 9).toUpperCase();
+}
+
+function validarCartaoCredito(numero) {
+    if (!numero) return false;
+    
+    const numeroLimpo = numero.replace(/\D/g, '');
+    if (numeroLimpo.length < 13 || numeroLimpo.length > 19) return false;
+    
+    let soma = 0;
+    let alternar = false;
+    
+    for (let i = numeroLimpo.length - 1; i >= 0; i--) {
+        let digito = parseInt(numeroLimpo.charAt(i));
+        
+        if (alternar) {
+            digito *= 2;
+            if (digito > 9) {
+                digito = (digito % 10) + 1;
+            }
+        }
+        
+        soma += digito;
+        alternar = !alternar;
+    }
+    
+    return (soma % 10) === 0;
+}
+
+function enviarConfirmacaoDoacao(email, nome, valor, tituloProjeto) {
+    console.log(`Email de confirmação enviado para ${email}:`);
+    console.log(`Caro ${nome}, obrigado por doar R$ ${formatarDinheiro(valor)} para "${tituloProjeto}"`);
+}
+
+// Configurar busca
+function configurarBusca() {
+    const inputBusca = document.getElementById('search-input');
+    if (inputBusca) {
+        inputBusca.addEventListener('input', function(e) {
+            const termoBusca = e.target.value.toLowerCase();
+            filtrarProjetosPorBusca(termoBusca);
+        });
+    }
+}
+
+function filtrarProjetosPorBusca(termo) {
+    const cartoesProjetos = document.querySelectorAll('.project-card');
+    
+    cartoesProjetos.forEach(cartao => {
+        const titulo = cartao.querySelector('.project-title')?.textContent?.toLowerCase() || '';
+        const descricao = cartao.querySelector('.project-description')?.textContent?.toLowerCase() || '';
+        const categoria = cartao.dataset.category?.toLowerCase() || '';
+        
+        const corresponde = titulo.includes(termo) || 
+                           descricao.includes(termo) || 
+                           categoria.includes(termo);
+        
+        cartao.style.display = corresponde ? 'block' : 'none';
+    });
+}
+
+// Animações das barras de progresso
+function animarBarrasProgresso() {
+    const barrasProgresso = document.querySelectorAll('.progress-fill');
+    
+    const observer = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+            if (entry.isIntersecting) {
+                const barraProgresso = entry.target;
+                const largura = barraProgresso.style.width;
+                barraProgresso.style.width = '0%';
+                
+                setTimeout(() => {
+                    barraProgresso.style.transition = 'width 1.5s ease-out';
+                    barraProgresso.style.width = largura;
+                }, 200);
+                
+                observer.unobserve(barraProgresso);
+            }
+        });
+    });
+    
+    barrasProgresso.forEach(barra => observer.observe(barra));
+}
+
+// Monitoramento de performance (IMPLEMENTADA)
 function monitorarPerformance() {
     if ('performance' in window) {
         window.addEventListener('load', () => {
@@ -1124,3 +1047,4 @@ function monitorarPerformance() {
         });
     }
 }
+
