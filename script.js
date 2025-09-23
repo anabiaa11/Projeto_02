@@ -13,7 +13,7 @@ const projetosAmostra = [
         categoria: "saude",
         meta: 50000,
         arrecadado: 32000,
-        imagem: "https://images.unsplash.com/photo-1576091160399-112ba8d25d1f?ixlib=rb-4.0.3&auto=format&fit=crop&w=1000&q=80",
+        imagem: "https://images.unsplash.com/photo-1559757148-5c350d0d3c56?ixlib=rb-4.0.3&auto=format&fit=crop&w=1000&q=80",
         doadores: 156,
         diasRestantes: 15
     },
@@ -79,7 +79,7 @@ const projetosAmostra = [
         categoria: "saude",
         meta: 80000,
         arrecadado: 23500,
-        imagem: "https://images.unsplash.com/photo-1559757148-5c350d0d3c56?ixlib=rb-4.0.3&auto=format&fit=crop&w=1000&q=80",
+        imagem: "https://images.unsplash.com/photo-1559757175-0eb30cd8c063?ixlib=rb-4.0.3&auto=format&fit=crop&w=1000&q=80",
         doadores: 187,
         diasRestantes: 25
     },
@@ -134,7 +134,7 @@ const projetosAmostra = [
         categoria: "cultura",
         meta: 22000,
         arrecadado: 8900,
-        imagem: "https://images.unsplash.com/photo-1493225457124-a3eb161ffa5f?ixlib=rb-4.0.3&auto=format&fit=crop&w=1000&q=80",
+        imagem: "https://images.unsplash.com/photo-1514320291840-2e0a9bf2a9ae?ixlib=rb-4.0.3&auto=format&fit=crop&w=1000&q=80",
         doadores: 156,
         diasRestantes: 38
     },
@@ -145,7 +145,7 @@ const projetosAmostra = [
         categoria: "animais",
         meta: 5000,
         arrecadado: 3200,
-        imagem: "https://images.unsplash.com/photo-1601758228041-f3b2795255f1?ixlib=rb-4.0.3&auto=format&fit=crop&w=1000&q=80",
+        imagem: "https://images.unsplash.com/photo-1583337130417-3346a1be7dee?ixlib=rb-4.0.3&auto=format&fit=crop&w=1000&q=80",
         doadores: 89,
         diasRestantes: 10
     },
@@ -156,7 +156,7 @@ const projetosAmostra = [
         categoria: "saude",
         meta: 60000,
         arrecadado: 28700,
-        imagem: "https://images.unsplash.com/photo-1559757175-0eb30cd8c063?ixlib=rb-4.0.3&auto=format&fit=crop&w=1000&q=80",
+        imagem: "https://images.unsplash.com/photo-1576091160550-2173dba999ef?ixlib=rb-4.0.3&auto=format&fit=crop&w=1000&q=80",
         doadores: 234,
         diasRestantes: 28
     },
@@ -170,6 +170,171 @@ const projetosAmostra = [
         imagem: "https://images.unsplash.com/photo-1516321318423-f06f85e504b3?ixlib=rb-4.0.3&auto=format&fit=crop&w=1000&q=80",
         doadores: 145,
         diasRestantes: 45
+    },
+    {
+        id: 16,
+        titulo: "Reforma do Orfanato São José",
+        descricao: "Orfanato que abriga 50 crianças precisa de reformas urgentes na cozinha e nos dormitórios.",
+        categoria: "educacao",
+        meta: 55000,
+        arrecadado: 31200,
+        imagem: "https://images.unsplash.com/photo-1488521787991-ed7bbaae773c?ixlib=rb-4.0.3&auto=format&fit=crop&w=1000&q=80",
+        doadores: 198,
+        diasRestantes: 33
+    },
+    {
+        id: 17,
+        titulo: "Transplante de Rim para Pedro",
+        descricao: "Pedro, de 35 anos, está na fila de transplante há 3 anos e precisa de ajuda para custear o procedimento.",
+        categoria: "saude",
+        meta: 120000,
+        arrecadado: 45600,
+        imagem: "https://images.unsplash.com/photo-1576091160399-112ba8d25d1f?ixlib=rb-4.0.3&auto=format&fit=crop&w=1000&q=80",
+        doadores: 267,
+        diasRestantes: 18
+    },
+    {
+        id: 18,
+        titulo: "Abrigo para Moradores de Rua",
+        descricao: "Construção de abrigo temporário para pessoas em situação de rua durante o inverno.",
+        categoria: "emergencia",
+        meta: 75000,
+        arrecadado: 22100,
+        imagem: "https://images.unsplash.com/photo-1469571486292-0ba58a3f068b?ixlib=rb-4.0.3&auto=format&fit=crop&w=1000&q=80",
+        doadores: 134,
+        diasRestantes: 67
+    },
+    {
+        id: 19,
+        titulo: "Quadra Poliesportiva da Comunidade",
+        descricao: "Construção de quadra poliesportiva para atividades esportivas e eventos comunitários.",
+        categoria: "esporte",
+        meta: 85000,
+        arrecadado: 38900,
+        imagem: "https://images.unsplash.com/photo-1571019613454-1cb2f99b2d8b?ixlib=rb-4.0.3&auto=format&fit=crop&w=1000&q=80",
+        doadores: 289,
+        diasRestantes: 52
+    },
+    {
+        id: 20,
+        titulo: "Teatro Comunitário",
+        descricao: "Revitalização do teatro comunitário para apresentações culturais e educativas da região.",
+        categoria: "cultura",
+        meta: 65000,
+        arrecadado: 28400,
+        imagem: "https://images.unsplash.com/photo-1507924538820-ede94a04019d?ixlib=rb-4.0.3&auto=format&fit=crop&w=1000&q=80",
+        doadores: 176,
+        diasRestantes: 41
+    },
+    {
+        id: 21,
+        titulo: "Clínica Veterinária Popular",
+        descricao: "Abertura de clínica veterinária com preços populares para atender animais de famílias carentes.",
+        categoria: "animais",
+        meta: 95000,
+        arrecadado: 52300,
+        imagem: "https://images.unsplash.com/photo-1576201836106-db1758fd1c97?ixlib=rb-4.0.3&auto=format&fit=crop&w=1000&q=80",
+        doadores: 312,
+        diasRestantes: 29
+    },
+    {
+        id: 22,
+        titulo: "Cirurgia de Catarata para Idosos",
+        descricao: "Mutirão de cirurgias de catarata para idosos de baixa renda recuperarem a visão.",
+        categoria: "saude",
+        meta: 42000,
+        arrecadado: 31800,
+        imagem: "https://images.unsplash.com/photo-1582750433449-648ed127bb54?ixlib=rb-4.0.3&auto=format&fit=crop&w=1000&q=80",
+        doadores: 203,
+        diasRestantes: 22
+    },
+    {
+        id: 23,
+        titulo: "Laboratório de Ciências",
+        descricao: "Equipar laboratório de ciências de escola pública para melhorar o ensino de física e química.",
+        categoria: "educacao",
+        meta: 38000,
+        arrecadado: 16700,
+        imagem: "https://images.unsplash.com/photo-1532094349884-543bc11b234d?ixlib=rb-4.0.3&auto=format&fit=crop&w=1000&q=80",
+        doadores: 127,
+        diasRestantes: 48
+    },
+    {
+        id: 24,
+        titulo: "Resgate de Vítimas de Enchente",
+        descricao: "Apoio emergencial para famílias desabrigadas pela enchente na região metropolitana.",
+        categoria: "emergencia",
+        meta: 68000,
+        arrecadado: 41200,
+        imagem: "https://images.unsplash.com/photo-1547036967-23d11aacaee0?ixlib=rb-4.0.3&auto=format&fit=crop&w=1000&q=80",
+        doadores: 298,
+        diasRestantes: 14
+    },
+    {
+        id: 25,
+        titulo: "Escolinha de Futebol Feminino",
+        descricao: "Criação de escolinha de futebol feminino para incentivar meninas a praticarem esporte.",
+        categoria: "esporte",
+        meta: 28000,
+        arrecadado: 19300,
+        imagem: "https://images.unsplash.com/photo-1574629810360-7efbbe195018?ixlib=rb-4.0.3&auto=format&fit=crop&w=1000&q=80",
+        doadores: 156,
+        diasRestantes: 36
+    },
+    {
+        id: 26,
+        titulo: "Festival de Dança Folclórica",
+        descricao: "Organização de festival para preservar e divulgar as tradições folclóricas regionais.",
+        categoria: "cultura",
+        meta: 32000,
+        arrecadado: 14800,
+        imagem: "https://images.unsplash.com/photo-1508700115892-45ecd05ae2ad?ixlib=rb-4.0.3&auto=format&fit=crop&w=1000&q=80",
+        doadores: 98,
+        diasRestantes: 44
+    },
+    {
+        id: 27,
+        titulo: "Canil Municipal",
+        descricao: "Construção de canil municipal para abrigar cães abandonados e facilitar adoções responsáveis.",
+        categoria: "animais",
+        meta: 78000,
+        arrecadado: 35600,
+        imagem: "https://images.unsplash.com/photo-1601758228041-f3b2795255f1?ixlib=rb-4.0.3&auto=format&fit=crop&w=1000&q=80",
+        doadores: 234,
+        diasRestantes: 58
+    },
+    {
+        id: 28,
+        titulo: "UTI Neonatal",
+        descricao: "Equipamentos para UTI neonatal do hospital público para salvar vidas de recém-nascidos.",
+        categoria: "saude",
+        meta: 150000,
+        arrecadado: 67800,
+        imagem: "https://images.unsplash.com/photo-1576091160550-2173dba999ef?ixlib=rb-4.0.3&auto=format&fit=crop&w=1000&q=80",
+        doadores: 389,
+        diasRestantes: 31
+    },
+    {
+        id: 29,
+        titulo: "Creche Comunitária",
+        descricao: "Construção de creche para atender crianças de 0 a 5 anos de famílias trabalhadoras.",
+        categoria: "educacao",
+        meta: 92000,
+        arrecadado: 48300,
+        imagem: "https://images.unsplash.com/photo-1503454537195-1dcabb73ffb9?ixlib=rb-4.0.3&auto=format&fit=crop&w=1000&q=80",
+        doadores: 267,
+        diasRestantes: 39
+    },
+    {
+        id: 30,
+        titulo: "Brigada de Incêndio Voluntária",
+        descricao: "Equipamentos e treinamento para brigada de incêndio voluntária da comunidade rural.",
+        categoria: "emergencia",
+        meta: 56000,
+        arrecadado: 33700,
+        imagem: "https://images.unsplash.com/photo-1558618666-fcd25c85cd64?ixlib=rb-4.0.3&auto=format&fit=crop&w=1000&q=80",
+        doadores: 198,
+        diasRestantes: 26
     }
 ];
 
