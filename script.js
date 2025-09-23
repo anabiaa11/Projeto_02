@@ -13,7 +13,7 @@ const projetosAmostra = [
         categoria: "saude",
         meta: 50000,
         arrecadado: 32000,
-        imagem: "KWM9u5cMAi5U.jpeg",
+        imagem: "https://images.unsplash.com/photo-1576091160399-112ba8d25d1f?ixlib=rb-4.0.3&auto=format&fit=crop&w=1000&q=80",
         doadores: 156,
         diasRestantes: 15
     },
@@ -24,7 +24,7 @@ const projetosAmostra = [
         categoria: "educacao",
         meta: 25000,
         arrecadado: 18500,
-        imagem: "BahovcVowuZy.jpg",
+        imagem: "https://images.unsplash.com/photo-1580582932707-520aed937b7b?ixlib=rb-4.0.3&auto=format&fit=crop&w=1000&q=80",
         doadores: 89,
         diasRestantes: 30
     },
@@ -35,7 +35,7 @@ const projetosAmostra = [
         categoria: "animais",
         meta: 15000,
         arrecadado: 12000,
-        imagem: "L065izs3T6Dt.jpg",
+        imagem: "https://images.unsplash.com/photo-1601758228041-f3b2795255f1?ixlib=rb-4.0.3&auto=format&fit=crop&w=1000&q=80",
         doadores: 203,
         diasRestantes: 45
     },
@@ -46,7 +46,7 @@ const projetosAmostra = [
         categoria: "emergencia",
         meta: 30000,
         arrecadado: 8000,
-        imagem: "u10s6WN5RO2a.jpg",
+        imagem: "https://images.unsplash.com/photo-1547036967-23d11aacaee0?ixlib=rb-4.0.3&auto=format&fit=crop&w=1000&q=80",
         doadores: 45,
         diasRestantes: 60
     },
@@ -57,7 +57,7 @@ const projetosAmostra = [
         categoria: "esporte",
         meta: 8000,
         arrecadado: 6200,
-        imagem: "BJNRyuoi1NSr.jpeg",
+        imagem: "https://images.unsplash.com/photo-1431324155629-1a6deb1dec8d?ixlib=rb-4.0.3&auto=format&fit=crop&w=1000&q=80",
         doadores: 67,
         diasRestantes: 20
     },
@@ -68,7 +68,7 @@ const projetosAmostra = [
         categoria: "cultura",
         meta: 12000,
         arrecadado: 4500,
-        imagem: "qnoCJKORzCaU.jpg",
+        imagem: "https://images.unsplash.com/photo-1493225457124-a3eb161ffa5f?ixlib=rb-4.0.3&auto=format&fit=crop&w=1000&q=80",
         doadores: 34,
         diasRestantes: 40
     },
@@ -101,7 +101,7 @@ const projetosAmostra = [
         categoria: "animais",
         meta: 20000,
         arrecadado: 16800,
-        imagem: "NKWW3hCAaKde.jpg",
+        imagem: "https://images.unsplash.com/photo-1548199973-03cce0bbc87b?ixlib=rb-4.0.3&auto=format&fit=crop&w=1000&q=80",
         doadores: 245,
         diasRestantes: 35
     },
@@ -876,13 +876,28 @@ function atualizarConversaoMoeda(valor) {
 }
 
 function mostrarSecaoPagamento(metodo) {
+    // Esconder todas as seções de pagamento
     document.querySelectorAll('.payment-section').forEach(section => {
         section.style.display = 'none';
     });
     
+    // Mostrar a seção selecionada
     const secaoSelecionada = document.getElementById(`${metodo}-section`);
     if (secaoSelecionada) {
         secaoSelecionada.style.display = 'block';
+        
+        // Se for PIX, processar automaticamente
+        if (metodo === 'pix') {
+            const valorInput = document.querySelector('input[name="amount"]');
+            const valor = valorInput ? parseFloat(valorInput.value) || 25 : 25;
+            
+            // Processar pagamento PIX automaticamente
+            processarPagamentoPix(valor, 1).then(resultado => {
+                console.log('Resultado PIX:', resultado);
+            }).catch(error => {
+                console.error('Erro ao processar PIX:', error);
+            });
+        }
     }
 }
 
@@ -1189,43 +1204,49 @@ function gerarQRCodeFallback(valor, chave) {
 }
 
 async function processarPagamentoPix(valor, projetoId) {
-    return new Promise(async (resolve) => {
-        try {
-            const chavePix = gerarChavePix();
-            const transacaoId = gerarIdTransacao();
-            const qrCode = await gerarQRCodePix(valor, chavePix, 'DoaFacil', 'Sao Paulo', transacaoId);
-            
-            // Atualiza a interface com o QR Code
-            setTimeout(() => {
-                const qrCodeContainer = document.getElementById('pix-qrcode');
-                const pixKeyInput = document.getElementById('pix-key-input');
-                
-                if (qrCodeContainer) {
-                    qrCodeContainer.innerHTML = `<img src="${qrCode}" alt="QR Code PIX" style="max-width: 200px; height: auto;">`;
-                }
-                
-                if (pixKeyInput) {
-                    pixKeyInput.value = chavePix;
-                }
-            }, 100);
-            
-            resolve({
-                status: 'pendente',
-                metodo: 'pix',
-                chavePix: chavePix,
-                qrCode: qrCode,
-                expiraEm: 30,
-                transacaoId: transacaoId
-            });
-        } catch (error) {
-            console.error('Erro ao processar pagamento PIX:', error);
-            resolve({
-                status: 'erro',
-                metodo: 'pix',
-                erro: error.message
-            });
+    try {
+        const chavePix = gerarChavePix();
+        const transacaoId = gerarIdTransacao();
+        const qrCode = await gerarQRCodePix(valor, chavePix, 'DoaFacil', 'Sao Paulo', transacaoId);
+        
+        // Atualizar a interface com o QR Code
+        const qrCodeContainer = document.getElementById('pix-qrcode');
+        const pixKeyInput = document.getElementById('pix-key-input');
+        
+        if (qrCodeContainer) {
+            qrCodeContainer.innerHTML = `
+                <div class="qr-code-display">
+                    <img src="${qrCode}" alt="QR Code PIX" style="max-width: 200px; height: auto; border: 2px solid var(--border-color); border-radius: 8px;">
+                    <p style="margin-top: 10px; font-size: 0.9em; color: var(--text-secondary);">
+                        Escaneie com seu app de banco ou PIX
+                    </p>
+                </div>
+            `;
         }
-    });
+        
+        if (pixKeyInput) {
+            pixKeyInput.value = chavePix;
+        }
+        
+        mostrarMensagem('QR Code PIX gerado com sucesso!', 'success');
+        
+        return {
+            status: 'pendente',
+            metodo: 'pix',
+            chavePix: chavePix,
+            qrCode: qrCode,
+            expiraEm: 30,
+            transacaoId: transacaoId
+        };
+    } catch (error) {
+        console.error('Erro ao processar pagamento PIX:', error);
+        mostrarMensagem('Erro ao gerar QR Code PIX. Tente novamente.', 'error');
+        return {
+            status: 'erro',
+            metodo: 'pix',
+            erro: error.message
+        };
+    }
 }
 
 // Função para copiar chave PIX
