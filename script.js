@@ -13,7 +13,7 @@ const projetosAmostra = [
         categoria: "saude",
         meta: 50000,
         arrecadado: 32000,
-        imagem: "https://images.unsplash.com/photo-1576091160399-112ba8d25d1f?ixlib=rb-4.0.3&auto=format&fit=crop&w=1000&q=80",
+        imagem: "KWM9u5cMAi5U.jpeg",
         doadores: 156,
         diasRestantes: 15
     },
@@ -24,7 +24,7 @@ const projetosAmostra = [
         categoria: "educacao",
         meta: 25000,
         arrecadado: 18500,
-        imagem: "https://images.unsplash.com/photo-1580582932707-520aed937b7b?ixlib=rb-4.0.3&auto=format&fit=crop&w=1000&q=80",
+        imagem: "BahovcVowuZy.jpg",
         doadores: 89,
         diasRestantes: 30
     },
@@ -32,10 +32,10 @@ const projetosAmostra = [
         id: 3,
         titulo: "Resgate de Animais Abandonados",
         descricao: "ONG que resgata animais abandonados precisa de recursos para medicamentos e ração.",
-        categoria: "animal",
+        categoria: "animais",
         meta: 15000,
         arrecadado: 12000,
-        imagem: "https://images.unsplash.com/photo-1601758228041-f3b2795255f1?ixlib=rb-4.0.3&auto=format&fit=crop&w=1000&q=80",
+        imagem: "L065izs3T6Dt.jpg",
         doadores: 203,
         diasRestantes: 45
     },
@@ -46,7 +46,7 @@ const projetosAmostra = [
         categoria: "emergencia",
         meta: 30000,
         arrecadado: 8000,
-        imagem: "https://images.unsplash.com/photo-1547036967-23d11aacaee0?ixlib=rb-4.0.3&auto=format&fit=crop&w=1000&q=80",
+        imagem: "u10s6WN5RO2a.jpg",
         doadores: 45,
         diasRestantes: 60
     },
@@ -57,7 +57,7 @@ const projetosAmostra = [
         categoria: "esporte",
         meta: 8000,
         arrecadado: 6200,
-        imagem: "https://images.unsplash.com/photo-1556056504-5c7696c4c28d?ixlib=rb-4.0.3&auto=format&fit=crop&w=1000&q=80",
+        imagem: "BJNRyuoi1NSr.jpeg",
         doadores: 67,
         diasRestantes: 20
     },
@@ -68,9 +68,108 @@ const projetosAmostra = [
         categoria: "cultura",
         meta: 12000,
         arrecadado: 4500,
-        imagem: "https://images.unsplash.com/photo-1493225457124-a3eb161ffa5f?ixlib=rb-4.0.3&auto=format&fit=crop&w=1000&q=80",
+        imagem: "qnoCJKORzCaU.jpg",
         doadores: 34,
         diasRestantes: 40
+    },
+    {
+        id: 7,
+        titulo: "Tratamento de Câncer para Maria",
+        descricao: "Maria, de 45 anos, foi diagnosticada com câncer e precisa de ajuda para custear o tratamento de quimioterapia.",
+        categoria: "saude",
+        meta: 80000,
+        arrecadado: 23500,
+        imagem: "https://images.unsplash.com/photo-1559757148-5c350d0d3c56?ixlib=rb-4.0.3&auto=format&fit=crop&w=1000&q=80",
+        doadores: 187,
+        diasRestantes: 25
+    },
+    {
+        id: 8,
+        titulo: "Biblioteca Comunitária",
+        descricao: "Construção de uma biblioteca comunitária para incentivar a leitura entre crianças e jovens da periferia.",
+        categoria: "educacao",
+        meta: 35000,
+        arrecadado: 14200,
+        imagem: "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?ixlib=rb-4.0.3&auto=format&fit=crop&w=1000&q=80",
+        doadores: 98,
+        diasRestantes: 50
+    },
+    {
+        id: 9,
+        titulo: "Castração de Animais de Rua",
+        descricao: "Campanha de castração gratuita para controlar a população de animais abandonados nas ruas.",
+        categoria: "animais",
+        meta: 20000,
+        arrecadado: 16800,
+        imagem: "NKWW3hCAaKde.jpg",
+        doadores: 245,
+        diasRestantes: 35
+    },
+    {
+        id: 10,
+        titulo: "Reconstrução após Incêndio",
+        descricao: "Casa de família foi destruída por incêndio. Precisam de ajuda para reconstruir e comprar móveis básicos.",
+        categoria: "emergencia",
+        meta: 45000,
+        arrecadado: 12300,
+        imagem: "https://images.unsplash.com/photo-1558618666-fcd25c85cd64?ixlib=rb-4.0.3&auto=format&fit=crop&w=1000&q=80",
+        doadores: 78,
+        diasRestantes: 55
+    },
+    {
+        id: 11,
+        titulo: "Academia de Boxe para Jovens",
+        descricao: "Projeto social que oferece aulas de boxe gratuitas para jovens em situação de vulnerabilidade social.",
+        categoria: "esporte",
+        meta: 18000,
+        arrecadado: 9500,
+        imagem: "https://images.unsplash.com/photo-1549719386-74dfcbf7dbed?ixlib=rb-4.0.3&auto=format&fit=crop&w=1000&q=80",
+        doadores: 112,
+        diasRestantes: 42
+    },
+    {
+        id: 12,
+        titulo: "Oficina de Música para Crianças",
+        descricao: "Compra de instrumentos musicais para oficina gratuita que atende crianças carentes da comunidade.",
+        categoria: "cultura",
+        meta: 22000,
+        arrecadado: 8900,
+        imagem: "https://images.unsplash.com/photo-1493225457124-a3eb161ffa5f?ixlib=rb-4.0.3&auto=format&fit=crop&w=1000&q=80",
+        doadores: 156,
+        diasRestantes: 38
+    },
+    {
+        id: 13,
+        titulo: "Cirurgia Veterinária de Emergência",
+        descricao: "Cão atropelado precisa de cirurgia urgente para salvar sua vida. Família não tem recursos para custear.",
+        categoria: "animais",
+        meta: 5000,
+        arrecadado: 3200,
+        imagem: "https://images.unsplash.com/photo-1601758228041-f3b2795255f1?ixlib=rb-4.0.3&auto=format&fit=crop&w=1000&q=80",
+        doadores: 89,
+        diasRestantes: 10
+    },
+    {
+        id: 14,
+        titulo: "Prótese para Acidente de Trabalho",
+        descricao: "Trabalhador perdeu a perna em acidente e precisa de prótese para voltar a trabalhar e sustentar a família.",
+        categoria: "saude",
+        meta: 60000,
+        arrecadado: 28700,
+        imagem: "https://images.unsplash.com/photo-1559757175-0eb30cd8c063?ixlib=rb-4.0.3&auto=format&fit=crop&w=1000&q=80",
+        doadores: 234,
+        diasRestantes: 28
+    },
+    {
+        id: 15,
+        titulo: "Computadores para Escola Pública",
+        descricao: "Escola pública precisa de computadores para laboratório de informática e inclusão digital dos alunos.",
+        categoria: "educacao",
+        meta: 40000,
+        arrecadado: 19800,
+        imagem: "https://images.unsplash.com/photo-1516321318423-f06f85e504b3?ixlib=rb-4.0.3&auto=format&fit=crop&w=1000&q=80",
+        doadores: 145,
+        diasRestantes: 45
     }
 ];
 
@@ -931,11 +1030,217 @@ async function processarPagamentoBoleto(valor, projetoId) {
 
 // Funções auxiliares de pagamento
 function gerarChavePix() {
-    return Math.random().toString(36).substring(2, 15) + '@pix.com.br';
+    // Gera uma chave PIX aleatória (simulada)
+    const tipos = ['email', 'telefone', 'cpf', 'aleatoria'];
+    const tipo = tipos[Math.floor(Math.random() * tipos.length)];
+    
+    switch (tipo) {
+        case 'email':
+            return `doacao${Math.random().toString(36).substring(2, 8)}@doafacil.com.br`;
+        case 'telefone':
+            return `+5511${Math.floor(Math.random() * 900000000 + 100000000)}`;
+        case 'cpf':
+            return gerarCPFAleatorio();
+        default:
+            return Math.random().toString(36).substring(2, 15).toUpperCase();
+    }
 }
 
-function gerarQRCodePix(valor, chave) {
-    return `data:image/svg+xml;base64,${btoa('<svg xmlns="http://www.w3.org/2000/svg" width="100" height="100"><rect width="100" height="100" fill="black"/><text x="50" y="50" fill="white" text-anchor="middle">QR</text></svg>')}`;
+function gerarCPFAleatorio() {
+    // Gera um CPF válido aleatório (apenas para demonstração)
+    const cpf = Array.from({length: 9}, () => Math.floor(Math.random() * 10));
+    
+    // Calcula primeiro dígito verificador
+    let soma = 0;
+    for (let i = 0; i < 9; i++) {
+        soma += cpf[i] * (10 - i);
+    }
+    let resto = soma % 11;
+    cpf.push(resto < 2 ? 0 : 11 - resto);
+    
+    // Calcula segundo dígito verificador
+    soma = 0;
+    for (let i = 0; i < 10; i++) {
+        soma += cpf[i] * (11 - i);
+    }
+    resto = soma % 11;
+    cpf.push(resto < 2 ? 0 : 11 - resto);
+    
+    return cpf.join('').replace(/(\d{3})(\d{3})(\d{3})(\d{2})/, '$1.$2.$3-$4');
+}
+
+function gerarStringPix(valor, chave, nomeRecebedor, cidade, transacaoId) {
+    // Gera string PIX seguindo o padrão EMV
+    const payload = {
+        '00': '01', // Payload Format Indicator
+        '01': '12', // Point of Initiation Method (12 = static, 11 = dynamic)
+        '26': {
+            '00': 'BR.GOV.BCB.PIX',
+            '01': chave
+        },
+        '52': '0000', // Merchant Category Code
+        '53': '986', // Transaction Currency (986 = BRL)
+        '54': valor.toFixed(2), // Transaction Amount
+        '58': 'BR', // Country Code
+        '59': nomeRecebedor.substring(0, 25), // Merchant Name
+        '60': cidade.substring(0, 15), // Merchant City
+        '62': {
+            '05': transacaoId.substring(0, 25) // Reference Label
+        }
+    };
+    
+    // Converte para string EMV
+    let pixString = '';
+    for (const [id, value] of Object.entries(payload)) {
+        if (typeof value === 'object') {
+            let subString = '';
+            for (const [subId, subValue] of Object.entries(value)) {
+                subString += subId + String(subValue.length).padStart(2, '0') + subValue;
+            }
+            pixString += id + String(subString.length).padStart(2, '0') + subString;
+        } else {
+            pixString += id + String(value.length).padStart(2, '0') + value;
+        }
+    }
+    
+    // Adiciona CRC16 (simplificado)
+    pixString += '6304';
+    const crc = calcularCRC16(pixString);
+    pixString += crc;
+    
+    return pixString;
+}
+
+function calcularCRC16(data) {
+    // Implementação simplificada do CRC16 para PIX
+    let crc = 0xFFFF;
+    const polynomial = 0x1021;
+    
+    for (let i = 0; i < data.length; i++) {
+        crc ^= (data.charCodeAt(i) << 8);
+        for (let j = 0; j < 8; j++) {
+            if (crc & 0x8000) {
+                crc = (crc << 1) ^ polynomial;
+            } else {
+                crc <<= 1;
+            }
+            crc &= 0xFFFF;
+        }
+    }
+    
+    return crc.toString(16).toUpperCase().padStart(4, '0');
+}
+
+async function gerarQRCodePix(valor, chave, nomeRecebedor = 'DoaFacil', cidade = 'Sao Paulo', transacaoId) {
+    try {
+        // Gera a string PIX
+        const pixString = gerarStringPix(valor, chave, nomeRecebedor, cidade, transacaoId);
+        
+        // Usa a API QRServer para gerar o QR Code
+        const qrCodeUrl = `https://api.qrserver.com/v1/create-qr-code/?size=200x200&data=${encodeURIComponent(pixString)}&format=png&margin=10&ecc=M`;
+        
+        // Testa se a URL está acessível
+        const response = await fetch(qrCodeUrl, { method: 'HEAD' });
+        if (response.ok) {
+            return qrCodeUrl;
+        } else {
+            throw new Error('API não disponível');
+        }
+    } catch (error) {
+        console.log('Erro ao gerar QR Code via API:', error);
+        // Fallback: gera um QR Code simples com SVG
+        return gerarQRCodeFallback(valor, chave);
+    }
+}
+
+function gerarQRCodeFallback(valor, chave) {
+    // QR Code de fallback em SVG
+    const size = 200;
+    const modules = 25; // Simplificado
+    const moduleSize = size / modules;
+    
+    let svg = `<svg xmlns="http://www.w3.org/2000/svg" width="${size}" height="${size}" viewBox="0 0 ${size} ${size}">`;
+    svg += `<rect width="${size}" height="${size}" fill="white"/>`;
+    
+    // Gera padrão pseudo-aleatório baseado no valor e chave
+    const seed = (valor * 1000 + chave.length * 7) % 1000;
+    let random = seed;
+    
+    for (let i = 0; i < modules; i++) {
+        for (let j = 0; j < modules; j++) {
+            random = (random * 9301 + 49297) % 233280;
+            if (random / 233280 > 0.5) {
+                const x = j * moduleSize;
+                const y = i * moduleSize;
+                svg += `<rect x="${x}" y="${y}" width="${moduleSize}" height="${moduleSize}" fill="black"/>`;
+            }
+        }
+    }
+    
+    // Adiciona cantos de posicionamento
+    const cornerSize = moduleSize * 7;
+    svg += `<rect x="0" y="0" width="${cornerSize}" height="${cornerSize}" fill="black"/>`;
+    svg += `<rect x="${moduleSize}" y="${moduleSize}" width="${cornerSize - 2 * moduleSize}" height="${cornerSize - 2 * moduleSize}" fill="white"/>`;
+    svg += `<rect x="${2 * moduleSize}" y="${2 * moduleSize}" width="${cornerSize - 4 * moduleSize}" height="${cornerSize - 4 * moduleSize}" fill="black"/>`;
+    
+    svg += '</svg>';
+    
+    return `data:image/svg+xml;base64,${btoa(svg)}`;
+}
+
+async function processarPagamentoPix(valor, projetoId) {
+    return new Promise(async (resolve) => {
+        try {
+            const chavePix = gerarChavePix();
+            const transacaoId = gerarIdTransacao();
+            const qrCode = await gerarQRCodePix(valor, chavePix, 'DoaFacil', 'Sao Paulo', transacaoId);
+            
+            // Atualiza a interface com o QR Code
+            setTimeout(() => {
+                const qrCodeContainer = document.getElementById('pix-qrcode');
+                const pixKeyInput = document.getElementById('pix-key-input');
+                
+                if (qrCodeContainer) {
+                    qrCodeContainer.innerHTML = `<img src="${qrCode}" alt="QR Code PIX" style="max-width: 200px; height: auto;">`;
+                }
+                
+                if (pixKeyInput) {
+                    pixKeyInput.value = chavePix;
+                }
+            }, 100);
+            
+            resolve({
+                status: 'pendente',
+                metodo: 'pix',
+                chavePix: chavePix,
+                qrCode: qrCode,
+                expiraEm: 30,
+                transacaoId: transacaoId
+            });
+        } catch (error) {
+            console.error('Erro ao processar pagamento PIX:', error);
+            resolve({
+                status: 'erro',
+                metodo: 'pix',
+                erro: error.message
+            });
+        }
+    });
+}
+
+// Função para copiar chave PIX
+function copiarChavePix() {
+    const pixKeyInput = document.getElementById('pix-key-input');
+    if (pixKeyInput && pixKeyInput.value) {
+        navigator.clipboard.writeText(pixKeyInput.value).then(() => {
+            mostrarMensagem('Chave PIX copiada para a área de transferência!', 'success');
+        }).catch(() => {
+            // Fallback para navegadores mais antigos
+            pixKeyInput.select();
+            document.execCommand('copy');
+            mostrarMensagem('Chave PIX copiada!', 'success');
+        });
+    }
 }
 
 function gerarIdTransacao() {
@@ -1047,4 +1352,125 @@ function monitorarPerformance() {
         });
     }
 }
+
+
+
+// Função para alternar tema
+function alternarTema() {
+    const body = document.body;
+    const themeIcon = document.getElementById('theme-icon');
+    const currentTheme = body.getAttribute('data-theme');
+    
+    if (currentTheme === 'dark') {
+        // Mudar para tema claro
+        body.removeAttribute('data-theme');
+        themeIcon.className = 'fas fa-moon';
+        localStorage.setItem('theme', 'light');
+        mostrarMensagem('Tema claro ativado', 'info');
+    } else {
+        // Mudar para tema escuro
+        body.setAttribute('data-theme', 'dark');
+        themeIcon.className = 'fas fa-sun';
+        localStorage.setItem('theme', 'dark');
+        mostrarMensagem('Tema escuro ativado', 'info');
+    }
+}
+
+// Função para carregar tema salvo
+function carregarTemaSalvo() {
+    const savedTheme = localStorage.getItem('theme');
+    const themeIcon = document.getElementById('theme-icon');
+    const body = document.body;
+    
+    if (savedTheme === 'dark') {
+        body.setAttribute('data-theme', 'dark');
+        if (themeIcon) {
+            themeIcon.className = 'fas fa-sun';
+        }
+    } else {
+        body.removeAttribute('data-theme');
+        if (themeIcon) {
+            themeIcon.className = 'fas fa-moon';
+        }
+    }
+}
+
+// Detectar preferência do sistema
+function detectarPreferenciaSistema() {
+    if (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches) {
+        const savedTheme = localStorage.getItem('theme');
+        if (!savedTheme) {
+            document.body.setAttribute('data-theme', 'dark');
+            const themeIcon = document.getElementById('theme-icon');
+            if (themeIcon) {
+                themeIcon.className = 'fas fa-sun';
+            }
+        }
+    }
+}
+
+// Listener para mudanças na preferência do sistema
+if (window.matchMedia) {
+    window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', (e) => {
+        const savedTheme = localStorage.getItem('theme');
+        if (!savedTheme) {
+            if (e.matches) {
+                document.body.setAttribute('data-theme', 'dark');
+                const themeIcon = document.getElementById('theme-icon');
+                if (themeIcon) {
+                    themeIcon.className = 'fas fa-sun';
+                }
+            } else {
+                document.body.removeAttribute('data-theme');
+                const themeIcon = document.getElementById('theme-icon');
+                if (themeIcon) {
+                    themeIcon.className = 'fas fa-moon';
+                }
+            }
+        }
+    });
+}
+
+
+// Inicialização quando o DOM estiver carregado
+document.addEventListener('DOMContentLoaded', function() {
+    console.log('DoaFácil carregado!');
+    
+    // Carregar tema salvo
+    carregarTemaSalvo();
+    detectarPreferenciaSistema();
+    
+    // Configurar navegação suave
+    configurarNavegacaoSuave();
+    
+    // Configurar menu mobile
+    configurarMenuMobile();
+    
+    // Configurar formulários
+    configurarFormularios();
+    
+    // Configurar pagamentos
+    configurarPagamentos();
+    
+    // Carregar projetos
+    carregarProjetos();
+    
+    // Atualizar estatísticas
+    atualizarEstatisticas();
+    
+    // Buscar taxas de câmbio
+    buscarTaxasCambio();
+    
+    // Buscar frase do dia
+    buscarFraseDoDia();
+    
+    // Monitorar performance
+    monitorarPerformance();
+    
+    // Configurar lazy loading para imagens
+    configurarLazyLoading();
+    
+    // Configurar animações de scroll
+    configurarAnimacoesScroll();
+});
 
