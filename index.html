@@ -20,7 +20,7 @@
                     <a href="#projects" class="nav-link">Projetos</a>
                     <a href="#about" class="nav-link">Sobre</a>
                     <a href="#contact" class="nav-link">Contato</a>
-                    <button class="btn-create-project" onclick="openModal()">
+                    <button class="btn-create-project" onclick="abrirModal()">
                         Criar Vaquinha Grátis
                     </button>
                 </div>
@@ -39,7 +39,7 @@
             <div class="hero-content">
                 <h1>Ajudando muitos com um pouco de cada um</h1>
                 <p>Crie sua vaquinha online gratuita e mobilize pessoas para sua causa. Sem taxas, sem complicação.</p>
-                <button class="btn-primary" onclick="openModal()">
+                <button class="btn-primary" onclick="abrirModal()">
                     <i class="fas fa-plus"></i> Criar Vaquinha Grátis
                 </button>
             </div>
@@ -240,7 +240,7 @@
     <!-- Modal for Creating Project -->
     <div id="project-modal" class="modal">
         <div class="modal-content">
-            <span class="close" onclick="closeModal()">&times;</span>
+            <span class="close" onclick="fecharModal()">&times;</span>
             <h2>Criar Nova Vaquinha</h2>
             <form id="create-project-form" class="project-form">
                 <div class="form-group">
@@ -274,7 +274,7 @@
                     <small>Opcional: Adicione uma imagem representativa do seu projeto</small>
                 </div>
                 <div class="form-actions">
-                    <button type="button" class="btn-secondary" onclick="closeModal()">Cancelar</button>
+                    <button type="button" class="btn-secondary" onclick="fecharModal()">Cancelar</button>
                     <button type="submit" class="btn-primary">
                         <i class="fas fa-plus"></i>
                         Criar Campanha
@@ -287,7 +287,7 @@
     <!-- Donation Modal -->
     <div id="donation-modal" class="modal">
         <div class="modal-content">
-            <span class="close" onclick="closeDonationModal()">&times;</span>
+            <span class="close" onclick="fecharModalDoacao()">&times;</span>
             <h2>Fazer Doação</h2>
             <div id="donation-project-info"></div>
             <form id="donation-form" class="donation-form">
@@ -335,20 +335,15 @@
                 <div id="pix-section" class="payment-section" style="display: none;">
                     <div class="pix-info">
                         <h4><i class="fas fa-qrcode"></i> Pagamento via PIX</h4>
-                        <p>Escaneie o QR Code ou copie a chave PIX</p>
-                        <div id="pix-qrcode" class="qrcode-placeholder">
-                            <i class="fas fa-qrcode"></i>
-                            <p>QR Code será gerado após confirmação</p>
-                        </div>
+                        <p>Escaneie o QR Code ou copie a chave PIX para fazer o pagamento</p>
+                        <div id="pix-qrcode"></div>
                         <div class="pix-key">
-                            <input type="text" id="pix-key-input" readonly placeholder="Chave PIX será gerada">
-                            <button type="button" onclick="copyPixKey()" class="btn-copy">
-                                <i class="fas fa-copy"></i> Copiar
-                            </button>
+                            <input type="text" id="pix-key-input" readonly>
+                            <button type="button" class="btn-copy" onclick="copiarChavePix()">Copiar</button>
                         </div>
                     </div>
                 </div>
-                <div id="card-section" class="payment-section" style="display: none;">
+                <div id="credit_card-section" class="payment-section" style="display: none;">
                     <div class="card-form">
                         <div class="form-group">
                             <label for="card-number">Número do Cartão</label>
@@ -366,32 +361,25 @@
                         </div>
                         <div class="form-group">
                             <label for="card-name">Nome no Cartão</label>
-                            <input type="text" id="card-name" name="card_name" placeholder="NOME IMPRESSO NO CARTÃO" maxlength="50">
+                            <input type="text" id="card-name" name="card_name" placeholder="Nome como está no cartão">
                         </div>
                     </div>
                 </div>
-                <div class="form-group">
-                    <label for="donation-message">Mensagem (opcional)</label>
-                    <textarea id="donation-message" name="message" rows="3" placeholder="Deixe uma mensagem de apoio" maxlength="200"></textarea>
+                <div id="boleto-section" class="payment-section" style="display: none;">
+                    <div class="boleto-info">
+                        <h4><i class="fas fa-barcode"></i> Pagamento via Boleto</h4>
+                        <p>O boleto será gerado após a confirmação e enviado para seu email</p>
+                        <p><strong>Vencimento:</strong> 3 dias úteis</p>
+                    </div>
                 </div>
-                <div class="donation-summary">
-                    <div class="summary-item">
-                        <span>Valor da doação:</span>
-                        <span id="summary-amount">R$ 0,00</span>
-                    </div>
-                    <div class="summary-item">
-                        <span>Taxa da plataforma:</span>
-                        <span id="summary-fee">R$ 0,00 (0%)</span>
-                    </div>
-                    <div class="summary-item total">
-                        <span>Total:</span>
-                        <span id="summary-total">R$ 0,00</span>
-                    </div>
+                <div id="donation-summary" class="donation-summary" style="display: none;">
+                    <!-- Resumo será preenchido dinamicamente -->
                 </div>
                 <div class="form-actions">
-                    <button type="button" class="btn-secondary" onclick="closeDonationModal()">Cancelar</button>
+                    <button type="button" class="btn-secondary" onclick="fecharModalDoacao()">Cancelar</button>
                     <button type="submit" class="btn-primary">
-                        <i class="fas fa-heart"></i> Confirmar Doação
+                        <i class="fas fa-heart"></i>
+                        Confirmar Doação
                     </button>
                 </div>
             </form>
@@ -407,8 +395,8 @@
             </div>
             <div id="success-details" class="success-details"></div>
             <div class="success-actions">
-                <button class="btn-primary" onclick="closeSuccessModal()">Fechar</button>
-                <button class="btn-secondary" onclick="shareSuccess()">
+                <button class="btn-primary" onclick="fecharModalSucesso()">Fechar</button>
+                <button class="btn-secondary" onclick="compartilharSucesso()">
                     <i class="fas fa-share-alt"></i> Compartilhar
                 </button>
             </div>
@@ -426,3 +414,4 @@
     <script src="script.js"></script>
 </body>
 </html>
+
