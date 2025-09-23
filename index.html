@@ -85,6 +85,16 @@
                     <h3>Acompanhamento em Tempo Real</h3>
                     <p>Veja o progresso da sua campanha e interaja com os doadores.</p>
                 </div>
+                <div class="feature-card">
+                    <i class="fas fa-shield-alt"></i>
+                    <h3>Segurança Garantida</h3>
+                    <p>Todas as transações são protegidas com criptografia de nível bancário.</p>
+                </div>
+                <div class="feature-card">
+                    <i class="fas fa-clock"></i>
+                    <h3>Suporte 24/7</h3>
+                    <p>Nossa equipe está sempre disponível para ajudar você e seus doadores.</p>
+                </div>
             </div>
         </div>
     </section>
@@ -93,12 +103,18 @@
     <section id="projects" class="projects">
         <div class="container">
             <h2>Projetos em Destaque</h2>
+            <div class="search-container">
+                <input type="text" id="search-input" placeholder="Buscar projetos..." class="search-input">
+                <i class="fas fa-search search-icon"></i>
+            </div>
             <div class="projects-filter">
                 <button class="filter-btn active" data-filter="all">Todos</button>
                 <button class="filter-btn" data-filter="saude">Saúde</button>
                 <button class="filter-btn" data-filter="educacao">Educação</button>
                 <button class="filter-btn" data-filter="animal">Animais</button>
                 <button class="filter-btn" data-filter="emergencia">Emergência</button>
+                <button class="filter-btn" data-filter="esporte">Esporte</button>
+                <button class="filter-btn" data-filter="cultura">Cultura</button>
             </div>
             <div class="projects-grid" id="projects-grid">
                 <!-- Projects will be loaded dynamically -->
@@ -135,7 +151,7 @@
                     </div>
                 </div>
                 <div class="about-image">
-                    <img src="https://images.unsplash.com/photo-1559027615-cd4628902d4a?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1000&q=80" alt="Pessoas ajudando">
+                    <img src="https://images.unsplash.com/photo-1559027615-cd4628902d4a?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1000&q=80" alt="Pessoas ajudando" loading="lazy">
                 </div>
             </div>
         </div>
@@ -149,25 +165,34 @@
                 <div class="contact-info">
                     <div class="contact-item">
                         <i class="fas fa-envelope"></i>
-                        <h4>Email</h4>
-                        <p>ana.b.ferreira36@aluno.senai.br</p>
+                        <div>
+                            <h4>Email</h4>
+                            <p>ana.b.ferreira36@aluno.senai.br</p>
+                        </div>
                     </div>
                     <div class="contact-item">
                         <i class="fas fa-phone"></i>
-                        <h4>Telefone</h4>
-                        <p>(51) 99999-5488</p>
+                        <div>
+                            <h4>Telefone</h4>
+                            <p>(51) 99999-5488</p>
+                        </div>
                     </div>
                     <div class="contact-item">
                         <i class="fas fa-map-marker-alt"></i>
-                        <h4>Endereço</h4>
-                        <p>Cachoeirinha, RS - Brasil</p>
+                        <div>
+                            <h4>Endereço</h4>
+                            <p>Cachoeirinha, RS - Brasil</p>
+                        </div>
                     </div>
                 </div>
                 <form class="contact-form" id="contact-form">
                     <input type="text" name="name" placeholder="Seu Nome" required>
                     <input type="email" name="email" placeholder="Seu Email" required>
                     <textarea name="message" placeholder="Sua Mensagem" rows="5" required></textarea>
-                    <button type="submit" class="btn-primary">Enviar Mensagem</button>
+                    <button type="submit" class="btn-primary">
+                        <i class="fas fa-paper-plane"></i>
+                        Enviar Mensagem
+                    </button>
                 </form>
             </div>
         </div>
@@ -181,10 +206,10 @@
                     <h3>DoaFácil</h3>
                     <p>Transformando vidas através da solidariedade.</p>
                     <div class="social-links">
-                        <a href="#"><i class="fab fa-facebook-f"></i></a>
-                        <a href="#"><i class="fab fa-instagram"></i></a>
-                        <a href="#"><i class="fab fa-twitter"></i></a>
-                        <a href="#"><i class="fab fa-linkedin-in"></i></a>
+                        <a href="#" aria-label="Facebook"><i class="fab fa-facebook-f"></i></a>
+                        <a href="#" aria-label="Instagram"><i class="fab fa-instagram"></i></a>
+                        <a href="#" aria-label="Twitter"><i class="fab fa-twitter"></i></a>
+                        <a href="#" aria-label="LinkedIn"><i class="fab fa-linkedin-in"></i></a>
                     </div>
                 </div>
                 <div class="footer-section">
@@ -207,7 +232,7 @@
                 </div>
             </div>
             <div class="footer-bottom">
-                <p>&copy; 2025 DoaFácil Todos os direitos reservados</p>
+                <p>&copy; 2024 DoaFácil. Todos os direitos reservados.</p>
             </div>
         </div>
     </footer>
@@ -219,12 +244,12 @@
             <h2>Criar Nova Vaquinha</h2>
             <form id="create-project-form" class="project-form">
                 <div class="form-group">
-                    <label>Título da Campanha</label>
-                    <input type="text" name="title" required>
+                    <label for="project-title">Título da Campanha</label>
+                    <input type="text" id="project-title" name="title" required maxlength="100">
                 </div>
                 <div class="form-group">
-                    <label>Categoria</label>
-                    <select name="category" required>
+                    <label for="project-category">Categoria</label>
+                    <select id="project-category" name="category" required>
                         <option value="">Selecione uma categoria</option>
                         <option value="saude">Saúde</option>
                         <option value="educacao">Educação</option>
@@ -235,20 +260,25 @@
                     </select>
                 </div>
                 <div class="form-group">
-                    <label>Meta de Arrecadação (R$)</label>
-                    <input type="number" name="goal" min="1" required>
+                    <label for="project-goal">Meta de Arrecadação (R$)</label>
+                    <input type="number" id="project-goal" name="goal" min="100" max="1000000" required>
                 </div>
                 <div class="form-group">
-                    <label>Descrição</label>
-                    <textarea name="description" rows="4" required></textarea>
+                    <label for="project-description">Descrição</label>
+                    <textarea id="project-description" name="description" rows="4" required maxlength="500" placeholder="Descreva sua causa e como as doações serão utilizadas"></textarea>
+                    <small class="char-count">0/500 caracteres</small>
                 </div>
                 <div class="form-group">
-                    <label>URL da Imagem</label>
-                    <input type="url" name="image" placeholder="https://exemplo.com/imagem.jpg">
+                    <label for="project-image">URL da Imagem</label>
+                    <input type="url" id="project-image" name="image" placeholder="https://exemplo.com/imagem.jpg">
+                    <small>Opcional: Adicione uma imagem representativa do seu projeto</small>
                 </div>
                 <div class="form-actions">
                     <button type="button" class="btn-secondary" onclick="closeModal()">Cancelar</button>
-                    <button type="submit" class="btn-primary">Criar Campanha</button>
+                    <button type="submit" class="btn-primary">
+                        <i class="fas fa-plus"></i>
+                        Criar Campanha
+                    </button>
                 </div>
             </form>
         </div>
@@ -268,30 +298,34 @@
                     <button type="button" class="amount-btn" data-amount="100">R$ 100</button>
                 </div>
                 <div class="form-group">
-                    <label>Valor Personalizado (R$)</label>
-                    <input type="number" name="amount" min="1" step="0.01" placeholder="Digite o valor">
+                    <label for="donation-amount">Valor Personalizado (R$)</label>
+                    <input type="number" id="donation-amount" name="amount" min="1" step="0.01" placeholder="Digite o valor">
                     <div id="converted-amount" class="converted-amount"></div>
                 </div>
                 <div class="form-group">
-                    <label>Seu Nome</label>
-                    <input type="text" name="donor_name" required>
+                    <label for="donor-name">Seu Nome</label>
+                    <input type="text" id="donor-name" name="donor_name" required maxlength="100">
                 </div>
                 <div class="form-group">
-                    <label>Email</label>
-                    <input type="email" name="donor_email" required>
+                    <label for="donor-email">Email</label>
+                    <input type="email" id="donor-email" name="donor_email" required>
                 </div>
                 <div class="form-group">
-                    <label>CPF</label>
-                    <input type="text" name="donor_cpf" placeholder="000.000.000-00" maxlength="14" required>
+                    <label for="donor-cpf">CPF</label>
+                    <input type="text" id="donor-cpf" name="donor_cpf" placeholder="000.000.000-00" maxlength="14" required>
                 </div>
                 <div class="form-group">
-                    <label>CEP</label>
-                    <input type="text" name="donor_cep" placeholder="00000-000" maxlength="9">
+                    <label for="donor-phone">Telefone (opcional)</label>
+                    <input type="tel" id="donor-phone" name="donor_phone" placeholder="(00) 00000-0000" maxlength="15">
+                </div>
+                <div class="form-group">
+                    <label for="donor-cep">CEP (opcional)</label>
+                    <input type="text" id="donor-cep" name="donor_cep" placeholder="00000-000" maxlength="9">
                     <div id="address-info" class="address-info"></div>
                 </div>
                 <div class="form-group">
-                    <label>Método de Pagamento</label>
-                    <select name="payment_method" required>
+                    <label for="payment-method">Método de Pagamento</label>
+                    <select id="payment-method" name="payment_method" required>
                         <option value="">Selecione o método</option>
                         <option value="pix">PIX (Instantâneo)</option>
                         <option value="credit_card">Cartão de Crédito</option>
@@ -302,9 +336,12 @@
                     <div class="pix-info">
                         <h4><i class="fas fa-qrcode"></i> Pagamento via PIX</h4>
                         <p>Escaneie o QR Code ou copie a chave PIX</p>
-                        <div id="pix-qrcode"></div>
+                        <div id="pix-qrcode" class="qrcode-placeholder">
+                            <i class="fas fa-qrcode"></i>
+                            <p>QR Code será gerado após confirmação</p>
+                        </div>
                         <div class="pix-key">
-                            <input type="text" id="pix-key-input" readonly>
+                            <input type="text" id="pix-key-input" readonly placeholder="Chave PIX será gerada">
                             <button type="button" onclick="copyPixKey()" class="btn-copy">
                                 <i class="fas fa-copy"></i> Copiar
                             </button>
@@ -314,28 +351,28 @@
                 <div id="card-section" class="payment-section" style="display: none;">
                     <div class="card-form">
                         <div class="form-group">
-                            <label>Número do Cartão</label>
-                            <input type="text" name="card_number" placeholder="0000 0000 0000 0000" maxlength="19">
+                            <label for="card-number">Número do Cartão</label>
+                            <input type="text" id="card-number" name="card_number" placeholder="0000 0000 0000 0000" maxlength="19">
                         </div>
                         <div class="form-row">
                             <div class="form-group">
-                                <label>Validade</label>
-                                <input type="text" name="card_expiry" placeholder="MM/AA" maxlength="5">
+                                <label for="card-expiry">Validade</label>
+                                <input type="text" id="card-expiry" name="card_expiry" placeholder="MM/AA" maxlength="5">
                             </div>
                             <div class="form-group">
-                                <label>CVV</label>
-                                <input type="text" name="card_cvv" placeholder="123" maxlength="4">
+                                <label for="card-cvv">CVV</label>
+                                <input type="text" id="card-cvv" name="card_cvv" placeholder="123" maxlength="4">
                             </div>
                         </div>
                         <div class="form-group">
-                            <label>Nome no Cartão</label>
-                            <input type="text" name="card_name" placeholder="NOME IMPRESSO NO CARTÃO">
+                            <label for="card-name">Nome no Cartão</label>
+                            <input type="text" id="card-name" name="card_name" placeholder="NOME IMPRESSO NO CARTÃO" maxlength="50">
                         </div>
                     </div>
                 </div>
                 <div class="form-group">
-                    <label>Mensagem (opcional)</label>
-                    <textarea name="message" rows="3" placeholder="Deixe uma mensagem de apoio"></textarea>
+                    <label for="donation-message">Mensagem (opcional)</label>
+                    <textarea id="donation-message" name="message" rows="3" placeholder="Deixe uma mensagem de apoio" maxlength="200"></textarea>
                 </div>
                 <div class="donation-summary">
                     <div class="summary-item">
@@ -378,7 +415,14 @@
         </div>
     </div>
 
+    <!-- Loading Overlay -->
+    <div id="loading-overlay" class="loading-overlay" style="display: none;">
+        <div class="loading-spinner">
+            <i class="fas fa-spinner fa-spin"></i>
+            <p>Processando...</p>
+        </div>
+    </div>
+
     <script src="script.js"></script>
 </body>
 </html>
-
