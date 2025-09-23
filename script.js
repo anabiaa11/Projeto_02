@@ -1,3 +1,4 @@
+ 
 // Variáveis Globais
 let projetos = [];
 let filtroAtual = 'all';
@@ -72,9 +73,7 @@ const projetosAmostra = [
         doadores: 34,
         diasRestantes: 40
     }
-];
-
-// Inicializar aplicação quando DOM carregar
+];// Inicializar aplicação quando DOM carregar
 document.addEventListener('DOMContentLoaded', function() {
     inicializarApp();
     configurarEventListeners();
@@ -84,6 +83,7 @@ document.addEventListener('DOMContentLoaded', function() {
     buscarTaxasCambio();
     configurarPagamentos();
 });
+
 
 // Inicializar aplicação
 function inicializarApp() {
@@ -352,7 +352,7 @@ function processarContato(e) {
     botaoSubmit.innerHTML = '<span class="loading-spinner"></span> Enviando...';
     botaoSubmit.disabled = true;
 
-    // Simular envio de email
+    
     setTimeout(() => {
         const dadosEmail = {
             nome: formData.get('name'),
@@ -370,7 +370,7 @@ function processarContato(e) {
     }, 1500);
 }
 
-// Funções do modal
+
 function abrirModal() {
     const modal = document.getElementById('project-modal');
     if (modal) {
@@ -407,7 +407,7 @@ function abrirModalDoacao(projetoId) {
         modal.style.display = 'block';
         document.body.style.overflow = 'hidden';
         
-        // Resetar formulário
+        
         const form = modal.querySelector('form');
         if (form) form.reset();
         
@@ -425,7 +425,7 @@ function fecharModalDoacao() {
         modal.style.display = 'none';
         document.body.style.overflow = 'auto';
         
-        // Resetar formulário
+        
         const form = document.getElementById('donation-form');
         if (form) form.reset();
         
@@ -449,7 +449,7 @@ function fecharModalSucesso() {
     }
 }
 
-// Funções utilitárias
+
 function formatarDinheiro(valor) {
     return new Intl.NumberFormat('pt-BR', {
         minimumFractionDigits: 2,
@@ -474,7 +474,7 @@ function atualizarEstatisticas() {
     const totalProjetos = projetos.length;
     const totalDoadores = projetos.reduce((soma, projeto) => soma + projeto.doadores, 0);
 
-    // Animar contadores
+    
     animarContador('total-donated', 0, totalDoado, 'currency');
     animarContador('total-projects', 0, totalProjetos, 'number');
     animarContador('total-donors', 0, totalDoadores, 'number');
@@ -514,7 +514,7 @@ function compartilharProjeto(projetoId) {
             url: `${window.location.origin}#project-${projetoId}`
         });
     } else {
-        // Fallback: copiar para clipboard
+        
         const url = `${window.location.origin}#project-${projetoId}`;
         navigator.clipboard.writeText(url).then(() => {
             mostrarMensagem('Link copiado para a área de transferência!', 'success');
@@ -554,14 +554,14 @@ function compartilharRedeSocial(plataforma, projetoId) {
 }
 
 function mostrarMensagem(texto, tipo) {
-    // Remover mensagens existentes
+    
     document.querySelectorAll('.message').forEach(msg => msg.remove());
 
     const mensagem = document.createElement('div');
     mensagem.className = `message ${tipo}`;
     mensagem.textContent = texto;
     
-    // Estilos da mensagem
+    
     Object.assign(mensagem.style, {
         position: 'fixed',
         top: '100px',
@@ -580,22 +580,22 @@ function mostrarMensagem(texto, tipo) {
 
     document.body.appendChild(mensagem);
     
-    // Animar entrada
+   
     setTimeout(() => {
         mensagem.style.transform = 'translateX(0)';
     }, 100);
 
-    // Remover após 5 segundos
+    
     setTimeout(() => {
         mensagem.style.transform = 'translateX(100%)';
         setTimeout(() => mensagem.remove(), 300);
     }, 5000);
 }
 
-// Funções de API e integração
+
 async function buscarTaxasCambio() {
     try {
-        // Usar API gratuita de câmbio
+        
         const resposta = await fetch('https://api.exchangerate-api.com/v4/latest/BRL');
         const dados = await resposta.json();
         
@@ -623,7 +623,7 @@ async function buscarPrecoBitcoin() {
         const dados = await resposta.json();
         return 1 / dados.bitcoin.brl;
     } catch (error) {
-        return 0.000012; // Fallback
+        return 0.000012;
     }
 }
 
@@ -655,7 +655,7 @@ async function buscarFraseDoDia() {
 }
 
 function configurarPagamentos() {
-    // Seleção do método de pagamento
+    
     const selectPagamento = document.querySelector('select[name="payment_method"]');
     if (selectPagamento) {
         selectPagamento.addEventListener('change', function() {
@@ -664,7 +664,7 @@ function configurarPagamentos() {
         });
     }
 
-    // Formatação de CPF
+    
     const inputCPF = document.querySelector('input[name="donor_cpf"]');
     if (inputCPF) {
         inputCPF.addEventListener('input', function() {
@@ -672,7 +672,7 @@ function configurarPagamentos() {
         });
     }
 
-    // Formatação de CEP
+    
     const inputCEP = document.querySelector('input[name="donor_cep"]');
     if (inputCEP) {
         inputCEP.addEventListener('input', function() {
@@ -724,7 +724,7 @@ function mostrarSecaoPagamento(metodo) {
     }
 }
 
-// Funções de formatação
+
 function formatarCPF(valor) {
     return valor
         .replace(/\D/g, '')
@@ -757,7 +757,7 @@ function formatarValidadeCartao(validade) {
         .replace(/(\/\d{2})\d+?$/, '$1');
 }
 
-// Buscar endereço por CEP
+
 async function carregarEnderecoPorCEP(cep) {
     try {
         const cepLimpo = cep.replace(/\D/g, '');
@@ -768,7 +768,7 @@ async function carregarEnderecoPorCEP(cep) {
         
         if (dados.erro) return null;
         
-        // Preencher campos de endereço
+        
         const campoRua = document.querySelector('input[name="donor_street"]');
         const campoBairro = document.querySelector('input[name="donor_neighborhood"]');
         const campoCidade = document.querySelector('input[name="donor_city"]');
@@ -797,7 +797,7 @@ async function carregarEnderecoPorCEP(cep) {
     }
 }
 
-// Processamento de pagamentos
+
 async function processarPagamento(dadosDoacao) {
     const { valor, metodo, projetoId } = dadosDoacao;
     
@@ -817,7 +817,7 @@ async function processarPagamento(dadosDoacao) {
     }
 }
 
-// Processamento PIX
+
 async function processarPagamentoPix(valor, projetoId) {
     return new Promise((resolve) => {
         setTimeout(() => {
@@ -829,14 +829,14 @@ async function processarPagamentoPix(valor, projetoId) {
                 metodo: 'pix',
                 chavePix: chavePix,
                 qrCode: qrCode,
-                expiraEm: 30, // minutos
+                expiraEm: 30, 
                 transacaoId: gerarIdTransacao()
             });
         }, 1000);
     });
 }
 
-// Processamento cartão de crédito
+
 async function processarPagamentoCartao(dadosDoacao) {
     return new Promise((resolve, reject) => {
         setTimeout(() => {
@@ -855,7 +855,7 @@ async function processarPagamentoCartao(dadosDoacao) {
     });
 }
 
-// Processamento boleto
+
 async function processarPagamentoBoleto(valor, projetoId) {
     return new Promise((resolve) => {
         setTimeout(() => {
@@ -870,13 +870,13 @@ async function processarPagamentoBoleto(valor, projetoId) {
     });
 }
 
-// Funções auxiliares de pagamento
+
 function gerarChavePix() {
     return Math.random().toString(36).substring(2, 15) + '@pix.com.br';
 }
 
 function gerarQRCodePix(valor, chave) {
-    // Em uma implementação real, isso geraria um QR Code válido
+   
     return `data:image/svg+xml;base64,${btoa('<svg xmlns="http://www.w3.org/2000/svg" width="100" height="100"><rect width="100" height="100" fill="black"/><text x="50" y="50" fill="white" text-anchor="middle">QR</text></svg>')}`;
 }
 
@@ -885,7 +885,7 @@ function gerarIdTransacao() {
 }
 
 function validarCartaoCredito(numero) {
-    // Validação básica usando algoritmo de Luhn
+    
     if (!numero) return false;
     
     const numeroLimpo = numero.replace(/\D/g, '');
@@ -912,7 +912,7 @@ function validarCartaoCredito(numero) {
 }
 
 function enviarConfirmacaoDoacao(email, nome, valor, tituloProjeto) {
-    // Simular envio de email de confirmação
+    
     console.log(`Email de confirmação enviado para ${email}:`);
     console.log(`Caro ${nome}, obrigado por doar R$ ${formatarDinheiro(valor)} para "${tituloProjeto}"`);
     
@@ -923,17 +923,17 @@ function enviarConfirmacaoDoacao(email, nome, valor, tituloProjeto) {
     // - Mailgun
 }
 
-// Funcionalidades adicionais
+
 function carregarMaisProjetos() {
     mostrarMensagem('Carregando mais projetos...', 'success');
     
-    // Em uma aplicação real, isso buscaria mais dados da API
+    
     setTimeout(() => {
         mostrarMensagem('Todos os projetos foram carregados.', 'success');
     }, 1000);
 }
 
-// Sistema de busca
+
 function configurarBusca() {
     const inputBusca = document.createElement('input');
     inputBusca.type = 'text';
@@ -1124,6 +1124,3 @@ function monitorarPerformance() {
         });
     }
 }
-
-// Inicializar monitoramento de performance
-monitorarPerformance();
