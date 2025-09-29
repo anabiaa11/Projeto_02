@@ -1,6 +1,6 @@
 # 🤝 DoaFacil
 
-**Plataforma de crowdfunding solidário para conectar pessoas que precisam de ajuda com aquelas dispostas a doar**
+**Plataforma de Financiamento solidário para conectar pessoas que precisam de ajuda com aquelas dispostas a doar**
 
 ## 📋 Visão Geral
 O DoaFacil é uma plataforma web que facilita a criação e participação em campanhas de arrecadação de fundos (vaquinhas) para causas sociais, emergências médicas, projetos educacionais e outras necessidades comunitárias.
